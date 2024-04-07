@@ -1,0 +1,12 @@
+:root {
+    --header-backgroundColor: #FF0000;
+    --footer-backgroundColor: #00FF00;
+  }
+body {
+    padding: 0; 
+    margin: 0;
+    box-sizing: border-box; 
+    min-height: 100vh;
+    display: flex; 
+    flex-direction: column;
+}

@@ -1,0 +1,4 @@
+header {
+    background-color: var(--header-backgroundColor); 
+    height: 70px;
+}

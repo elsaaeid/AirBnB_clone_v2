@@ -1,0 +1,18 @@
+header {
+    background-color: var(--header-backgroundColor);
+    height: 70px;
+    width: 100%;
+    border-bottom: 1px solid var(--header-bottomBorder-color);
+    position: relative;
+}
+header div.logo {
+    background-image: url(../images/logo.png);
+    background-repeat: no-repeat;
+    background-size: auto;
+    position: absolute;
+    top: 0px;
+    left: 20px;
+    z-index: 1000;
+    width: 20%;
+    height: 100%;
+}

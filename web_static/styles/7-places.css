@@ -1,0 +1,35 @@
+.container section.places {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+.container section.places h1 {
+    font-size: 30px;
+}
+.container section.places div article {
+    border: 1px solid var(--places-border-color);
+    border-radius: 4px;
+    width: 390px;
+    padding: 20px;
+    margin: 20px;
+}
+.container section.places div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.container section.places div.article-container {
+    flex-wrap: wrap;
+}
+.container section.places div article div.article-head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.container section.places div article div h2 {
+    font-size: 30px;
+    text-align: center;
+}
