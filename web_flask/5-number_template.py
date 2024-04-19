@@ -1,61 +1,57 @@
 #!/usr/bin/python3
-"""import class Flask, render_template method"""
-from flask import Flask, render_template
+
+from flask import Flask
+from flask import render_template
 
 app = Flask(__name__)
 
 
-@app.route('/', strict_slashes=False)
+@app.route("/", strict_slashes=False)
 def hello_hbnb():
-    """ displays text on browser """
+    """Displays 'Hello HBNB!'"""
     return "Hello HBNB!"
 
 
-@app.route('/hbnb', strict_slashes=False)
-def display_hbnb():
-    """ displays text on browser """
+@app.route("/hbnb", strict_slashes=False)
+def hbnb():
+    """Displays 'HBNB'"""
     return "HBNB"
 
 
-@app.route('/c/<text>', strict_slashes=False)
-def display_C(text):
-    """displays text
-    Args:
-        text (str): text
+@app.route("/c/<text>", strict_slashes=False)
+def c(text):
+    """Displays 'C' and replaces
+    any underscores in <text> with slashes.
     """
-    return 'C %s' % text.replace('_', ' ')
+    text = text.replace("_", " ")
+    return "C {}".format(text)
 
 
-@app.route('/python', defaults={'text': 'is cool'}, strict_slashes=False)
-@app.route('/python/', defaults={'text': 'is cool'}, strict_slashes=False)
-@app.route('/python/<text>', strict_slashes=False)
-def display_python(text):
-    """displays text
-    Args:
-        text (str): text
+@app.route("/python", strict_slashes=False)
+@app.route("/python/<text>", strict_slashes=False)
+def python(text="is cool"):
+    """Displays 'Python' and replaces
+    any underscores in <text> with slashes.
     """
-    return 'Python %s' % text.replace('_', ' ')
+    text = text.replace("_", " ")
+    return "Python {}".format(text)
 
 
-@app.route('/number/<int:n>', strict_slashes=False)
-def display_num(n):
-    """displays text
-    Args:
-        n (int): number
+@app.route("/number/<int:n>", strict_slashes=False)
+def number(n):
+    """Displays 'n is a number' only
+    if <n> is an integer
     """
-    return "%d is a number" % n
+    return "{} is a number".format(n)
 
 
-@app.route('/number_template/<int:n>', strict_slashes=False)
-def display_HTML(n):
-    """displays text
-    Args:
-        n (int): number
-    Returns:
-        HTML page
+@app.route("/number_template/<int:n>", strict_slashes=False)
+def number_template(n):
+    """Displays an HTML page only 
+    if <n> is an integer
     """
-    return render_template('5-number.html', n=n)
+    return render_template("5-number.html", n=n)
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host="0.0.0.0")
