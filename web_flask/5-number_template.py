@@ -17,9 +17,8 @@ def hbnb():
     """Displays 'HBNB'"""
     return "HBNB"
 
-
 @app.route("/c/<text>", strict_slashes=False)
-def c(text):
+def display_C(text):
     """Displays 'C' and replaces
     any underscores in <text> with slashes.
     """
