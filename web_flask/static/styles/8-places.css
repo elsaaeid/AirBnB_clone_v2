@@ -1,0 +1,132 @@
+.places {
+	display: flex;
+	flex-direction: column;
+	padding-left: 30px;
+}
+.places h1 {
+	font-size: 30px;
+}
+.places_title {
+	padding-top: 30px;
+	margin-bottom: -25px;
+}
+.articles {
+	display: flex;
+	align-items: baseline;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+article {
+	width: 390px;
+	margin: 20px;
+	padding: 20px;
+	border: solid var(--article-borderColor) 1px;
+	border-radius: 4px;
+	text-align: center;
+	font-size: 30px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	padding-bottom: 30px;
+}
+article h2{ 
+	font-size: 30px;
+	margin-top: -1px;
+	padding-left: 20%;
+}
+.article_title {
+	width: 100%;
+}
+.price_by_night {
+	color: var(--priceColor);
+	border: solid var(--price-borderColor) 4px;
+	border-radius: 50%;
+	min-width: 60px;
+	height: 60px;
+	font-size: 30px;
+	margin-top: -10px;
+}
+.price {
+	margin-top: 10px;
+}
+.price_title {
+	display: flex;
+}
+.information {
+	height:80px;
+	border-top: solid var(--info-brColor) 1px;
+	border-bottom: solid var(--info-borderColor) 1px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+.max_guest {
+	width: 100px;
+	display: flex;
+	height: inherit;
+	flex-direction: column;
+	justify-content: center;
+}
+.guest_icon {
+	height: inherit;
+	width: inherit;
+	background: var(--guest-icon);
+	background-repeat: no-repeat;
+	margin-left: 35px;
+}
+.guest_number h2 {
+	font-size: 10px;
+	color: var(--guest-numberColor);
+}
+
+.number_rooms {
+	width: 100px;
+	display: flex;
+	height: inherit;
+	flex-direction: column;
+	justify-content: center;
+}
+.rooms_icon {
+	height: inherit;
+	width: inherit;
+	background: var(--rooms-icon);
+	background-repeat: no-repeat;
+	margin-left: 35px;
+}
+.rooms_number h2 {
+	font-size: 10px;
+	color: grey;
+}
+
+.number_bathrooms {
+	width: 100px;
+	display: flex;
+	height: inherit;
+	flex-direction: column;
+	justify-content: center;
+}
+.bathrooms_icon {
+	height: inherit;
+	width: inherit;
+	background: var(--bathrooms-icon);
+	background-repeat: no-repeat;
+	margin-left: 35px;
+}
+.bathrooms_number h2 {
+	font-size: 10px;
+	color: grey;
+}
+.user {
+	font-size: 11px;
+	color: var(--user-color);
+	text-align: left;
+	margin-top: 15px;
+	font-family: var(--main-font-family);
+}
+.description {
+	font-size: 11px;
+	color: var(--desc-color);
+	text-align: left;
+	margin-top: 5px;
+	font-family: var(--main-font-family);
+}

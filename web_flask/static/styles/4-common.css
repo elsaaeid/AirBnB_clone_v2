@@ -1,0 +1,36 @@
+:root {
+	--main-font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+	--text-color: #484848;
+	--header-logo-img: url(../images/logo.png);
+	--section-backgroundColor: white;
+ 	--section-borderColor: #CCCCCC;
+	--filters-backgroundColor: white;
+	--filters-borderColor: #DDDDDD;
+	--button-backgroundColor: #FF5A5F;
+	--button-color: #FFFFFF;
+	--location-borderColor: #DDDDDD;
+	--popover-backgroundColor: #FAFAFA;
+	--popover-borderColor: #DDDDDD;
+	--article-borderColor: #FF5A5F;
+	--price-borderColor: #FF5A5F;
+	--info-borderColor: #DDDDDD;
+	--guest-icon: url(../images/icon_group.png);
+	--rooms-icon: url(../images/icon_bed.png);
+	--bath-icon: url(../images/icon_bath.png);
+	--desc-color: rgb(29, 26, 26);
+	--user-color: rgb(29, 26, 26);
+
+}
+
+body {
+ 	color: var(--text-color);
+	font-size: 14px;
+	font-family: var(--main-font-family);
+}
+
+.container {
+	margin: auto;
+	max-width: 1000px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
