@@ -37,12 +37,7 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """return dictionary of instance attributes
-        Args:
-            cls (obj): memory address of class
-        Returns:
-            dictionary of objects
-        """
+        """return dictionary of instance attributes"""
         dbobjects = {}
         if cls:
             if type(cls) is str and cls in classes:
@@ -64,11 +59,7 @@ class DBStorage:
         return dbobjects
 
     def new(self, obj):
-        """
-        add object to current database session
-        Args:
-            obj (obj): an object
-        """
+        """add object to current database session"""
         if obj:
             self.__session.add(obj)
 
@@ -81,8 +72,6 @@ class DBStorage:
     def delete(self, obj=None):
         """
         delete from the current database session obj if not None
-        Args:
-            obj (obj): an object
         """
         if obj is not None:
             self.__session.delete(obj)
