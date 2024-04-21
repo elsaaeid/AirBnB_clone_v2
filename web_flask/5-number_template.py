@@ -43,7 +43,7 @@ def display_HTML(n):
     """displays int number on browser
     through this route of HTML page
     """
-    return render_template('5-number.html', n=n)
+    return render_template('templates/5-number.html', n=n)
 
 
 if __name__ == "__main__":
