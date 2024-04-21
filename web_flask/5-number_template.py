@@ -34,13 +34,13 @@ def display_python(text):
 
 @app.route('/number/<int:n>', strict_slashes=False)
 def display_num(n):
-    """displays number on browser"""
+    """displays int number on browser"""
     return "%d is a number" % n
 
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def display_HTML(n):
-    """displays number on browser
+    """displays int number on browser
     through this route of HTML page
     """
     return render_template('5-number.html', n=n)
