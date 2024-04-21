@@ -39,9 +39,7 @@ def display_python(text):
 
 @app.route('/number/<int:n>', strict_slashes=False)
 def display_num(n):
-    """displays text
-    Args:
-        n (int): number
+    """displays int number
     """
     return "%d is a number" % n
 
