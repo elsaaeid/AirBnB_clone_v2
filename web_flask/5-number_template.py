@@ -7,23 +7,21 @@ app = Flask(__name__)
 
 @app.route('/', strict_slashes=False)
 def hello_hbnb():
-    """displays (str) text
-    on browser
-    """
+    """ displays (str) text
+    on browser """
     return "Hello HBNB!"
 
 
 @app.route('/hbnb', strict_slashes=False)
 def display_hbnb():
-    """displays (str) text
-    on browser
-    """
+    """ displays (str) text
+    on browser """
     return "HBNB"
 
 
 @app.route('/c/<text>', strict_slashes=False)
 def display_C(text):
-    """display (str) text
+    """displays (str) text
     on browser
     """
     return 'C %s' % text.replace('_', ' ')
@@ -51,6 +49,8 @@ def display_num(n):
 def display_HTML(n):
     """displays (int) number
     on browser
+    Returns:
+        HTML Page
     """
     return render_template('5-number.html', n=n)
 
