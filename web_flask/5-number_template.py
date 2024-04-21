@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/', strict_slashes=False)
 def hello_hbnb():
-    """displays text
+    """displays (str) text
     on browser
     """
     return "Hello HBNB!"
@@ -15,7 +15,7 @@ def hello_hbnb():
 
 @app.route('/hbnb', strict_slashes=False)
 def display_hbnb():
-    """displays text
+    """displays (str) text
     on browser
     """
     return "HBNB"
@@ -23,9 +23,8 @@ def display_hbnb():
 
 @app.route('/c/<text>', strict_slashes=False)
 def display_C(text):
-    """displays text
-    Args:
-        text (str): text
+    """display (str) text
+    on browser
     """
     return 'C %s' % text.replace('_', ' ')
 
@@ -34,27 +33,24 @@ def display_C(text):
 @app.route('/python/', defaults={'text': 'is cool'}, strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def display_python(text):
-    """displays text
-    Args:
-        text (str): text
+    """displays (str) text
+    on browser
     """
     return 'Python %s' % text.replace('_', ' ')
 
 
 @app.route('/number/<int:n>', strict_slashes=False)
 def display_num(n):
-    """displays int number
+    """displays (int) number
+    on browser
     """
     return "%d is a number" % n
 
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def display_HTML(n):
-    """displays text
-    Args:
-        n (int): number
-    Returns:
-        HTML page
+    """displays (int) number
+    on browser
     """
     return render_template('5-number.html', n=n)
 
