@@ -15,7 +15,7 @@ def tear_down(self):
 
 
 @app.route('/states', strict_slashes=False)
-def list_all_states():
+def list_states():
     """lists states from database
     Returns:
         HTML Page
