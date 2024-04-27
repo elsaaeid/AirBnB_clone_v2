@@ -1,77 +1,72 @@
 #!/usr/bin/python3
 import unittest
-import os
 from models.place import Place
+from models.engine.file_storage import FileStorage
+from models import storage
 
 
-def setUpModule():
-    """ Funtion to set up a Module"""
-    pass
-
-
-def tearDownModule():
-    """ Function to clean up a Module"""
-    pass
-
-
-class TestModels(unittest.TestCase):
-    """ Funtion to test the BaseModel"""
+class TestPlace(unittest.TestCase):
 
     def setUp(self):
-        """ Set up a variable """
-        self.place_test = Place()
-        self.place_test.number_bathrooms = 1
-        self.place_test.longitude = 10.10
-        print("setUp")
+        """Set up a variable"""
+        self.place = Place()
 
     def tearDown(self):
-        """ Clean up variable """
-        print("tearDown")
+        """Clean up after test cases"""
+        del self.place
 
-    @classmethod
-    def setUpClass(cls):
-        """ Set up class """
-        print("setUpClass")
+    def test_place_instance(self):
+        """Test if Place is an instance of the Place class"""
+        self.assertIsInstance(self.place, Place)
 
-    @classmethod
-    def tearDownClass(cls):
-        """ Clean up the class """
-        print("tearDownClass")
+    def test_place_attributes(self):
+        """Test Place attributes"""
+        self.assertTrue(hasattr(self.place, "city_id"))
+        self.assertTrue(hasattr(self.place, "user_id"))
+        self.assertTrue(hasattr(self.place, "name"))
+        self.assertTrue(hasattr(self.place, "description"))
+        self.assertTrue(hasattr(self.place, "number_rooms"))
+        self.assertTrue(hasattr(self.place, "number_bathrooms"))
+        self.assertTrue(hasattr(self.place, "max_guest"))
+        self.assertTrue(hasattr(self.place, "price_by_night"))
+        self.assertTrue(hasattr(self.place, "latitude"))
+        self.assertTrue(hasattr(self.place, "longitude"))
+        self.assertTrue(hasattr(self.place, "amenity_ids"))
 
-    def placeTest(self):
-        """ Check place documentation """
-        self.assertIsNotNone(Place.__doc__)
-        self.assertIsNotNone(Place.__init__.__doc__)
+    def test_place_save(self):
+        """Test if the save function works for Place"""
+        self.place.name = "Test Place"
+        self.place.city_id = "123"
+        self.place.user_id = "456"
+        self.place.save()
+        all_places = storage.all(Place)
+        place_key = "Place." + self.place.id
+        self.assertIn(place_key, all_places)
 
-    def placeExistTest(self):
-        """ Check if the place properties are created """
-        self.place_test.save()
-        self.assertTrue(os.path.isfile('file.json'))
-        self.assertTrue(hasattr(self.place_test, "__init__"))
-        self.assertTrue(hasattr(self.place_test, "city_id"))
-        self.assertTrue(hasattr(self.place_test, "user_id"))
-        self.assertTrue(hasattr(self.place_test, "name"))
-        self.assertTrue(hasattr(self.place_test, "description"))
-        self.assertTrue(hasattr(self.place_test, "number_rooms"))
-        self.assertTrue(hasattr(self.place_test, "number_bathrooms"))
-        self.assertTrue(hasattr(self.place_test, "max_guest"))
-        self.assertTrue(hasattr(self.place_test, "price_by_night"))
-        self.assertTrue(hasattr(self.place_test, "latitude"))
-        self.assertTrue(hasattr(self.place_test, "longitude"))
-        self.assertTrue(hasattr(self.place_test, "amenity_ids"))
+    def test_place_to_dict(self):
+        """Test if the to_dict function works for Place"""
+        place_dict = self.place.to_dict()
+        self.assertEqual(self.place.__class__.__name__, 'Place')
+        self.assertIsInstance(place_dict['created_at'], str)
+        self.assertIsInstance(place_dict['updated_at'], str)
 
-    def modelToDictTest(self):
-        """ Check converting to dict """
-        my_dict = self.place_test.to_dict()
-        self.assertIsInstance(my_dict["id"], str)
-        self.assertIsInstance(my_dict["created_at"], str)
-        self.assertIsInstance(my_dict["updated_at"], str)
-        self.assertIsInstance(my_dict["number_bathrooms"], int)
-        self.assertIsInstance(my_dict["longitude"], float)
+    def test_place_storage(self):
+        """Test if Place is correctly stored in the storage"""
+        storage.new(self.place)
+        storage.save()
+        all_places = storage.all(Place)
+        place_key = "Place." + self.place.id
+        self.assertIn(place_key, all_places)
 
-    def placeIsInstanceTest(self):
-        """ Check if place_test is instance of Place """
-        self.assertIsInstance(self.place_test, Place)
+    def test_place_delete(self):
+        """Test if the delete function works for Place"""
+        place_id = self.place.id
+        storage.new(self.place)
+        storage.save()
+        storage.delete(self.place)
+        all_places = storage.all(Place)
+        place_key = "Place." + place_id
+        self.assertNotIn(place_key, all_places)
 
 
 if __name__ == '__main__':

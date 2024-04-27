@@ -1,66 +1,64 @@
 #!/usr/bin/python3
 import unittest
-import os
 from models.review import Review
+from models.engine.file_storage import FileStorage
+from models import storage
 
 
-def setUpModule():
-    """ Funtion to set up a Module"""
-    pass
+class TestReview(unittest.TestCase):
 
-
-def tearDownModule():
-    """ Function to clean up a Module"""
-    pass
-
-
-class TestModels(unittest.TestCase):
-    """ Funtion to test the BaseModel """
     def setUp(self):
-        """ Set up a variable """
-        self.review_test = Review()
-        self.review_test.user_id = "asd123"
-        print("setUp")
+        """Set up a variable"""
+        self.review = Review()
 
     def tearDown(self):
-        """ Clean up variable """
-        print("tearDown")
+        """Clean up after test cases"""
+        del self.review
 
-    @classmethod
-    def setUpClass(cls):
-        """ Set up class """
-        print("setUpClass")
+    def test_review_instance(self):
+        """Test if Review is an instance of the Review class"""
+        self.assertIsInstance(self.review, Review)
 
-    @classmethod
-    def tearDownClass(cls):
-        """ Clean up the class """
-        print("tearDownClass")
+    def test_review_attributes(self):
+        """Test Review attributes"""
+        self.assertTrue(hasattr(self.review, "place_id"))
+        self.assertTrue(hasattr(self.review, "user_id"))
+        self.assertTrue(hasattr(self.review, "text"))
 
-    def reviewTest(self):
-        """ Check the review documentation """
-        self.assertIsNotNone(Review.__doc__)
-        self.assertIsNotNone(Review.__init__.__doc__)
+    def test_review_save(self):
+        """Test if the save function works for Review"""
+        self.review.place_id = "123"
+        self.review.user_id = "456"
+        self.review.text = "This is a test review"
+        self.review.save()
+        all_reviews = storage.all(Review)
+        review_key = "Review." + self.review.id
+        self.assertIn(review_key, all_reviews)
 
-    def reviewExistTest(self):
-        """ Check if the review exists """
-        self.review_test.save()
-        self.assertTrue(os.path.isfile('file.json'))
-        self.assertTrue(hasattr(self.review_test, "__init__"))
-        self.assertTrue(hasattr(self.review_test, "text"))
-        self.assertTrue(hasattr(self.review_test, "user_id"))
-        self.assertTrue(hasattr(self.review_test, "place_id"))
+    def test_review_to_dict(self):
+        """Test if the to_dict function works for Review"""
+        review_dict = self.review.to_dict()
+        self.assertEqual(self.review.__class__.__name__, 'Review')
+        self.assertIsInstance(review_dict['created_at'], str)
+        self.assertIsInstance(review_dict['updated_at'], str)
 
-    def modelsToDictTest(self):
-        """ Check the converting to dict """
-        my_dict = self.review_test.to_dict()
-        self.assertIsInstance(my_dict["id"], str)
-        self.assertIsInstance(my_dict["user_id"], str)
-        self.assertIsInstance(my_dict["created_at"], str)
-        self.assertIsInstance(my_dict["updated_at"], str)
+    def test_review_storage(self):
+        """Test if Review is correctly stored in the storage"""
+        storage.new(self.review)
+        storage.save()
+        all_reviews = storage.all(Review)
+        review_key = "Review." + self.review.id
+        self.assertIn(review_key, all_reviews)
 
-    def reviewInstanceTest(self):
-        """ Check if review_test is instance of Review """
-        self.assertIsInstance(self.review_test, Review)
+    def test_review_delete(self):
+        """Test if the delete function works for Review"""
+        review_id = self.review.id
+        storage.new(self.review)
+        storage.save()
+        storage.delete(self.review)
+        all_reviews = storage.all(Review)
+        review_key = "Review." + review_id
+        self.assertNotIn(review_key, all_reviews)
 
 
 if __name__ == '__main__':

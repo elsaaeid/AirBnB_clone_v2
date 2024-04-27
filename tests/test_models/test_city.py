@@ -1,82 +1,62 @@
 #!/usr/bin/python3
-
 import unittest
-import os
 from models.city import City
+from models.engine.file_storage import FileStorage
+from models import storage
 
 
-def setUpModule():
-    """It is a function to set a module"""
-
-    pass
-
-
-def tearDownModule():
-    """ It is a function to delete a module"""
-
-    pass
-
-
-class TestModels(unittest.TestCase):
-    """It is a function to test the BaseModel."""
+class TestCity(unittest.TestCase):
 
     def setUp(self):
-        """This sets a variable."""
-
-        self.city_test = City()
-        self.city_test.state_id = "100"
-        print("setUp")
+        """Set up a variable"""
+        self.city = City()
 
     def tearDown(self):
-        """This ends variable."""
+        """Clean up after test cases"""
+        del self.city
 
-        print("tearDown")
+    def test_city_instance(self):
+        """Test if City is an instance of the City class"""
+        self.assertIsInstance(self.city, City)
 
-    @classmethod
-    def setUpClass(cls):
-        """This defines class."""
+    def test_city_attributes(self):
+        """Test City attributes"""
+        self.assertTrue(hasattr(self.city, "name"))
+        self.assertTrue(hasattr(self.city, "state_id"))
 
-        print("setUpClass")
+    def test_city_save(self):
+        """Test if the save function works for City"""
+        self.city.name = "Test City"
+        self.city.state_id = "123"
+        self.city.save()
+        all_cities = storage.all(City)
+        city_key = "City." + self.city.id
+        self.assertIn(city_key, all_cities)
 
-    @classmethod
-    def tearDownClass(cls):
-        """This closes the class."""
+    def test_city_to_dict(self):
+        """Test if the to_dict function works for City"""
+        city_dict = self.city.to_dict()
+        self.assertEqual(self.city.__class__.__name__, 'City')
+        self.assertIsInstance(city_dict['created_at'], str)
+        self.assertIsInstance(city_dict['updated_at'], str)
 
-        print("tearDownClass")
+    def test_city_storage(self):
+        """Test if City is correctly stored in the storage"""
+        storage.new(self.city)
+        storage.save()
+        all_cities = storage.all(City)
+        city_key = "City." + self.city.id
+        self.assertIn(city_key, all_cities)
 
-    def cityDocumetationTest(self):
-        """This checks the documentation."""
-
-        self.assertIsNotNone(City.__doc__)
-        self.assertIsNotNone(City.__init__.__doc__)
-
-    def cityExistTest(self):
-        """This checks if the city methods exists."""
-
-        self.city_test.save()
-        self.assertTrue(os.path.isfile('file.json'))
-        self.assertTrue(hasattr(self.city_test, "__init__"))
-        self.assertTrue(hasattr(self.city_test, "state_id"))
-        self.assertTrue(hasattr(self.city_test, "name"))
-
-    def cityNameTest(self):
-        """This checks if the name is created."""
-
-        self.city_test.name = 'Paris'
-        self.assertEqual(self.city_test.name, 'Paris')
-
-    def modelsToDictTest(self):
-        """test the to_dict method of BaseModel class"""
-
-        my_dict = self.city_test.to_dict()
-        self.assertIsInstance(my_dict["created_at"], str)
-        self.assertIsInstance(my_dict["updated_at"], str)
-        self.assertIsInstance(my_dict["state_id"], str)
-        self.assertIsInstance(my_dict["id"], str)
-
-    def cityInstanceTest(self):
-        """This checks if city_test is instance of City."""
-        self.assertIsInstance(self.city_test, City)
+    def test_city_delete(self):
+        """Test if the delete function works for City"""
+        city_id = self.city.id
+        storage.new(self.city)
+        storage.save()
+        storage.delete(self.city)
+        all_cities = storage.all(City)
+        city_key = "City." + city_id
+        self.assertNotIn(city_key, all_cities)
 
 
 if __name__ == '__main__':

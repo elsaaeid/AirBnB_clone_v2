@@ -1,12 +1,10 @@
 #!/usr/bin/python3
-
-"""amenity class"""
-
+"""Amenity class"""
 from models.base_model import BaseModel
 
 
 class Amenity(BaseModel):
-    """This is amenity class"""
+    """This is the Amenity class"""
     name = ""
 
     def __init__(self, *args, **kwargs):

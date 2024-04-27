@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """create class DBStorage"""
 from os import getenv
-from sqlalchemy import (create_engine)
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.amenity import Amenity
 from models.base_model import BaseModel, Base
@@ -29,9 +29,8 @@ class DBStorage:
 
     def __init__(self):
         """initialize instances"""
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format
-                                      (user, password, host, database),
-                                      pool_pre_ping=True)
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
+            user, password, host, database), pool_pre_ping=True)
 
         if hbnb_env == 'test':
             Base.metadata.drop_all(self.__engine)
@@ -40,22 +39,19 @@ class DBStorage:
         """return dictionary of instance attributes"""
         dbobjects = {}
         if cls:
-            if type(cls) is str and cls in classes:
+            if isinstance(cls, str) and cls in classes:
                 for obj in self.__session.query(classes[cls]).all():
-                    key = str(obj.__class__.__name__) + "." + str(obj.id)
-                    val = obj
-                    dbobjects[key] = val
-            elif cls.__name__ in classes:
+                    key = "{}.{}".format(obj.__class__.__name__, obj.id)
+                    dbobjects[key] = obj
+            elif isinstance(cls, type) and issubclass(cls, BaseModel):
                 for obj in self.__session.query(cls).all():
-                    key = str(obj.__class__.__name__) + "." + str(obj.id)
-                    val = obj
-                    dbobjects[key] = val
+                    key = "{}.{}".format(obj.__class__.__name__, obj.id)
+                    dbobjects[key] = obj
         else:
-            for k, v in classes.items():
-                for obj in self.__session.query(v).all():
-                    key = str(v.__name__) + "." + str(obj.id)
-                    val = obj
-                    dbobjects[key] = val
+            for cls in classes.values():
+                for obj in self.__session.query(cls).all():
+                    key = "{}.{}".format(obj.__class__.__name__, obj.id)
+                    dbobjects[key] = obj
         return dbobjects
 
     def new(self, obj):
@@ -64,22 +60,16 @@ class DBStorage:
             self.__session.add(obj)
 
     def save(self):
-        """
-        commit all changes of the current database session
-        """
+        """commit all changes of the current database session"""
         self.__session.commit()
 
     def delete(self, obj=None):
-        """
-        delete from the current database session obj if not None
-        """
-        if obj is not None:
+        """delete from the current database session obj if not None"""
+        if obj:
             self.__session.delete(obj)
 
     def reload(self):
-        """
-        create all tables in the database and the current database session
-        """
+        """create all tables in the database and the current database session"""
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)

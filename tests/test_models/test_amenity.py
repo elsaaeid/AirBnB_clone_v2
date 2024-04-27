@@ -1,77 +1,57 @@
 #!/usr/bin/python3
 import unittest
-import os
 from models.amenity import Amenity
+from models.engine.file_storage import FileStorage
+from models import storage
 
 
-def setUpModule():
-    """It is a function to set module"""
-    pass
-
-
-def tearDownModule():
-    """It is function to delete module """
-    pass
-
-
-class TestModels(unittest.TestCase):
-    """ It is function to test the BaseModel."""
+class TestAmenity(unittest.TestCase):
 
     def setUp(self):
-        """This sets a variable."""
-
-        self.amenity_test = Amenity()
-        print("setUp")
+        """Set up a variable"""
+        self.amenity = Amenity(name="Test Amenity")
 
     def tearDown(self):
-        """This ends variable."""
+        """Clean up after test cases"""
+        del self.amenity
 
-        print("tearDown")
+    def test_amenity_instance(self):
+        """Test if Amenity is an instance of the Amenity class"""
+        self.assertIsInstance(self.amenity, Amenity)
 
-    @classmethod
-    def setUpClass(cls):
-        """This defines class."""
+    def test_amenity_attributes(self):
+        """Test Amenity attributes"""
+        self.assertTrue(hasattr(self.amenity, "name"))
 
-        print("setUpClass")
+    def test_amenity_save(self):
+        """Test if the save function works for Amenity"""
+        self.amenity.save()
+        self.assertNotEqual(self.amenity.created_at, self.amenity.updated_at)
 
-    @classmethod
-    def tearDownClass(cls):
-        """This closes the class."""
+    def test_amenity_to_dict(self):
+        """Test if the to_dict function works for Amenity"""
+        amenity_dict = self.amenity.to_dict()
+        self.assertEqual(self.amenity.__class__.__name__, 'Amenity')
+        self.assertIsInstance(amenity_dict['created_at'], str)
+        self.assertIsInstance(amenity_dict['updated_at'], str)
 
-        print("tearDownClass")
+    def test_amenity_storage(self):
+        """Test if Amenity is correctly stored in the storage"""
+        storage.new(self.amenity)
+        storage.save()
+        all_amenities = storage.all(Amenity)
+        amenity_key = "Amenity." + self.amenity.id
+        self.assertIn(amenity_key, all_amenities)
 
-    def amenityDocumentTest(self):
-        """This checks the documetation."""
-
-        self.assertIsNotNone(Amenity.__doc__)
-        self.assertIsNotNone(Amenity.__init__.__doc__)
-
-    def placeCityTest(self):
-        """ This checks the amenity methods exists."""
-
-        self.amenity_test.save()
-        self.assertTrue(os.path.isfile('file.json'))
-        self.assertTrue(hasattr(self.amenity_test, "__init__"))
-        self.assertTrue(hasattr(self.amenity_test, "name"))
-
-    def amenityNameTest(self):
-        """This checks if the name is created."""
-
-        self.amenity_test.name = 'Good'
-        self.assertEqual(self.amenity_test.name, 'Good')
-
-    def modelsToDictTest(self):
-        """ test the to_dict method of BaseModel class"""
-
-        my_dict = self.amenity_test.to_dict()
-        self.assertIsInstance(my_dict["created_at"], str)
-        self.assertIsInstance(my_dict["updated_at"], str)
-        self.assertIsInstance(my_dict["id"], str)
-
-    def amenityInstanceTest(self):
-        """This checks if amenity_test is instance of Amenity."""
-
-        self.assertIsInstance(self.amenity_test, Amenity)
+    def test_amenity_delete(self):
+        """Test if the delete function works for Amenity"""
+        amenity_id = self.amenity.id
+        storage.new(self.amenity)
+        storage.save()
+        storage.delete(self.amenity)
+        all_amenities = storage.all(Amenity)
+        amenity_key = "Amenity." + amenity_id
+        self.assertNotIn(amenity_key, all_amenities)
 
 
 if __name__ == '__main__':
