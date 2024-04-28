@@ -18,9 +18,14 @@ host = getenv("HBNB_MYSQL_HOST")
 password = getenv("HBNB_MYSQL_PWD")
 hbnb_env = getenv("HBNB_ENV")
 
-classes = {"State": State, "City": City, "User": User,
-           "Place": Place, "Review": Review, "Amenity": Amenity}
-
+classes = {
+    "Amenity": Amenity,
+    "City": City,
+    "Place": Place,
+    "Review": Review,
+    "State": State,
+    "User": User
+}
 
 class DBStorage:
     """class DBStorage"""
@@ -37,22 +42,22 @@ class DBStorage:
 
     def all(self, cls=None):
         """return dictionary of instance attributes"""
-        dbobjects = {}
+        new_dict = {}
         if cls:
             if isinstance(cls, str) and cls in classes:
                 for obj in self.__session.query(classes[cls]).all():
                     key = "{}.{}".format(obj.__class__.__name__, obj.id)
-                    dbobjects[key] = obj
+                    new_dict[key] = obj
             elif isinstance(cls, type) and issubclass(cls, BaseModel):
                 for obj in self.__session.query(cls).all():
                     key = "{}.{}".format(obj.__class__.__name__, obj.id)
-                    dbobjects[key] = obj
+                    new_dict[key] = obj
         else:
             for cls in classes.values():
                 for obj in self.__session.query(cls).all():
                     key = "{}.{}".format(obj.__class__.__name__, obj.id)
-                    dbobjects[key] = obj
-        return dbobjects
+                    new_dict[key] = obj
+        return new_dict
 
     def new(self, obj):
         """add object to current database session"""
@@ -79,3 +84,19 @@ class DBStorage:
     def close(self):
         """close session"""
         self.__session.close()
+
+    def get(self, cls, id):
+        """ retrieves """
+        if cls in classes.values() and id and type(id) == str:
+            d_obj = self.all(cls)
+            for key, value in d_obj.items():
+                if key.split(".")[1] == id:
+                    return value
+        return None
+
+    def count(self, cls=None):
+        """ counts """
+        data = self.all(cls)
+        if cls in classes.values():
+            data = self.all(cls)
+        return len(data)

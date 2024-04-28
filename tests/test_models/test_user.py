@@ -1,30 +1,90 @@
 #!/usr/bin/python3
 import unittest
-from models.user import User
-from models.engine.file_storage import FileStorage
+import inspect
+import models
+from models import user
+from models.base_model import BaseModel
+import pep8
 from models import storage
+from models.user import User
 
+class TestUserDocs(unittest.TestCase):
+    """Tests to check the documentation and style of User class"""
+
+    @classmethod
+    def setUpClass(cls):
+        """Set up for the doc tests"""
+        cls.user_functions = inspect.getmembers(user.User, inspect.isfunction)
+
+    def test_pep8_conformance_user(self):
+        """Test that models/user.py conforms to PEP8."""
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(['models/user.py'])
+        self.assertEqual(result.total_errors, 0,
+                         "Found code style errors (and warnings).")
+
+    def test_pep8_conformance_test_user(self):
+        """Test that tests/test_models/test_user.py conforms to PEP8."""
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(['tests/test_models/test_user.py'])
+        self.assertEqual(result.total_errors, 0,
+                         "Found code style errors (and warnings).")
+
+    def test_user_module_docstring(self):
+        """Test for the user.py module docstring"""
+        self.assertIsNot(user.__doc__, None,
+                         "user.py needs a docstring")
+        self.assertTrue(len(user.__doc__) >= 1,
+                         "user.py needs a docstring")
+
+    def test_user_class_docstring(self):
+        """Test for the User class docstring"""
+        self.assertIsNot(user.User.__doc__, None,
+                         "User class needs a docstring")
+        self.assertTrue(len(user.User.__doc__) >= 1,
+                         "User class needs a docstring")
+
+    def test_user_func_docstrings(self):
+        """Test for the presence of docstrings in User methods"""
+        for func in self.user_functions:
+            self.assertIsNot(func[1].__doc__, None,
+                             "{:s} method needs a docstring".format(func[0]))
+            self.assertTrue(len(func[1].__doc__) >= 1,
+                             "{:s} method needs a docstring".format(func[0]))
 
 class TestUser(unittest.TestCase):
-
-    def setUp(self):
-        """Set up a variable"""
-        self.user = User()
-
-    def tearDown(self):
-        """Clean up after test cases"""
-        del self.user
+    """Test the User class"""
+    def test_is_subclass(self):
+        """Test that User is a subclass of BaseModel"""
+        user = User()
+        self.assertIsInstance(user, BaseModel)
+        self.assertTrue(hasattr(user, "id"))
+        self.assertTrue(hasattr(user, "created_at"))
+        self.assertTrue(hasattr(user, "updated_at"))
 
     def test_user_instance(self):
         """Test if User is an instance of the User class"""
-        self.assertIsInstance(self.user, User)
+        user = User()
+        self.assertIsInstance(user, User)
 
     def test_user_attributes(self):
         """Test User attributes"""
-        self.assertTrue(hasattr(self.user, "email"))
-        self.assertTrue(hasattr(self.user, "password"))
-        self.assertTrue(hasattr(self.user, "first_name"))
-        self.assertTrue(hasattr(self.user, "last_name"))
+        user = User()
+        self.assertTrue(hasattr(user, "email"))
+        self.assertTrue(hasattr(user, "password"))
+        self.assertTrue(hasattr(user, "first_name"))
+        self.assertTrue(hasattr(user, "last_name"))
+
+        if models.storage_type == 'db':
+            self.assertIsNone(user.email)
+            self.assertIsNone(user.password)
+            self.assertIsNone(user.first_name)
+            self.assertIsNone(user.last_name)
+        else:
+            self.assertEqual(user.email, "")
+            self.assertEqual(user.password, "")
+            self.assertEqual(user.first_name, "")
+            self.assertEqual(user.last_name, "")
 
     def test_user_save(self):
         """Test if the save function works for User"""
