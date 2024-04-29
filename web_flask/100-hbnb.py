@@ -25,18 +25,18 @@ def show_page():
     dict_states = storage.all(State)
     dict_amenities = storage.all(Amenity)
     dict_places = storage.all(Place)
-    states = []
-    amenities = []
-    places = []
+    all_states = []
+    all_amenities = []
+    all_places = []
 
     for k, v in dict_states.items():
-        states.append(v)
+        all_states.append(v)
     for k, v in dict_amenities.items():
-        amenities.append(v)
+        all_amenities.append(v)
     for k, v in dict_places.items():
-        places.append(v)
-    return render_template('100-hbnb.html', states=states,
-                           amenities=amenities, places=places)
+        all_places.append(v)
+    return render_template('100-hbnb.html', all_states = all_states,
+                           all_amenities = all_amenities, all_places = all_places)
 
 
 if __name__ == "__main__":

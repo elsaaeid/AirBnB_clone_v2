@@ -2,6 +2,8 @@
 """Place class"""
 import models
 from models.base_model import BaseModel, Base
+from models.review import Review
+from models.amenity import Amenity
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
@@ -56,7 +58,6 @@ class Place(BaseModel, Base):
         @property
         def reviews(self):
             """Returns the list of Review instances"""
-            from models.review import Review
             review_list = []
             all_reviews = models.storage.all(Review)
             for review in all_reviews.values():
@@ -67,7 +68,6 @@ class Place(BaseModel, Base):
         @property
         def amenities(self):
             """Returns the list of Amenity instances"""
-            from models.amenity import Amenity
             amenity_list = []
             all_amenities = models.storage.all(Amenity)
             for amenity in all_amenities.values():

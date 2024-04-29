@@ -21,10 +21,10 @@ def list_states():
         HTML Page
     """
     dict_states = storage.all(State)
-    states = []
+    all_states = []
     for k, v in dict_states.items():
-        states.append(v)
-    return render_template('9-states.html', states=states)
+        all_states.append(v)
+    return render_template('9-states.html', all_states = all_states)
 
 
 @app.route('/states/<id>', strict_slashes=False)
@@ -36,14 +36,14 @@ def find_state(id):
         HTML Page
     """
     dict_states = storage.all(State)
-    states = []
+    all_states = []
     states_id = []
     for k, v in dict_states.items():
         states_id.append(v.id)
-        states.append(v)
-    return render_template('9-states.html', states=states,
-                           states_id=states_id, id=id)
+        all_states.append(v)
+    return render_template('9-states.html', all_states = all_states,
+                           states_id = states_id, id = id)
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)i
+    app.run(host='0.0.0.0', port=5000)

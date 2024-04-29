@@ -2,11 +2,13 @@
 import unittest
 import inspect
 import pycodestyle
+import time
 from datetime import datetime
 import os
-from models.base_model import BaseModel
-import time
-from unittest import mock
+import models
+BaseModel = models.base_model.BaseModel
+module_doc = models.base_model.__doc__
+
 
 
 class TestBaseModelDocs(unittest.TestCase):
@@ -17,31 +19,38 @@ class TestBaseModelDocs(unittest.TestCase):
         """Set up for docstring tests"""
         cls.base_functions = inspect.getmembers(BaseModel, inspect.isfunction)
 
-    def test_pep8_conformance(self):
-        """Test that base_model, test_base_model to PEP8"""
-        for path in ['models/base_model.py',
-                    'tests/test_models/test_base_model.py']:
+    def test_pep8_equality(self):
+        """Test that base_model.py and test_base_model.py conform to PEP8"""
+        for path in ['models/base_model.py', 'tests/test_models/test_base_model.py']:
             with self.subTest(path=path):
                 errors = pycodestyle.Checker(path).check_all()
                 self.assertEqual(errors, 0)
 
     def test_module_docstring(self):
-        """Test for module docstring in BaseModel methods"""
+        """Test for module docstring in BaseModel"""
         module_doc = inspect.getdoc(BaseModel)
         self.assertIsNot(module_doc, None, "base_model.py needs a docstring")
         self.assertTrue(len(module_doc) > 1, "base_model.py needs a docstring")
 
     def test_class_docstring(self):
-        """Test for class docstring in BaseModel methods"""
+        """Test for class docstring in BaseModel"""
         self.assertIsNot(BaseModel.__doc__, None, "BaseModel class needs a docstring")
         self.assertTrue(len(BaseModel.__doc__) >= 1, "BaseModel class needs a docstring")
 
-    def test_func_docstrings(self):
+    def test_func_docstring(self):
         """Test for docstrings in BaseModel methods"""
-        for func in self.base_functions:
-            with self.subTest(function=func):
-                self.assertIsNot(func[1].__doc__, None, f"{func[0]} method needs a docstring")
-                self.assertTrue(len(func[1].__doc__) > 1, f"{func[0]} method needs a docstring")
+        for func_name, func in self.base_functions:
+            with self.subTest(function=func_name):
+                self.assertIsNot(
+                    func.__doc__,
+                    None,
+                    f"{func_name} method needs a docstring"
+                )
+                self.assertTrue(
+                    len(func.__doc__) > 1,
+                    f"{func_name} method needs a docstring"
+                )
+
 
 class TestBaseModel(unittest.TestCase):
     """Test the BaseModel class"""
@@ -73,7 +82,7 @@ class TestBaseModel(unittest.TestCase):
         string_representation = str(model)
         self.assertEqual(string_representation, f"[BaseModel] ({model.id}) {model.__dict__}")
 
-    @mock.patch('models.storage')
+    @unittest.mock.patch('models.storage')
     def test_save(self, mock_storage):
         """Test that save method updates `updated_at` and calls
         `storage.save`"""
@@ -110,11 +119,10 @@ class TestBaseModel(unittest.TestCase):
         """Test if the delete function works for BaseModel"""
         model = BaseModel()
         model.delete()
-        self.assertNotIn(model, BaseModel._BaseModel__objects)
+        self.assertNotIn(model, BaseModel)
 
     def test_new_instance(self):
         """Test if a new instance of BaseModel is created"""
-        model = BaseModel()
         new_model = BaseModel()
         self.assertIsInstance(new_model, BaseModel)
 
@@ -122,18 +130,18 @@ class TestBaseModel(unittest.TestCase):
         """Test that two BaseModel instances have different datetime objects
         and that upon creation have identical updated_at and created_at value."""
         tic = datetime.utcnow()
-        inst1 = BaseModel()
+        model1 = BaseModel()
         toc = datetime.utcnow()
-        self.assertTrue(tic <= inst1.created_at <= toc)
+        self.assertTrue(tic <= model1.created_at <= toc)
         time.sleep(1e-4)
         tic = datetime.utcnow()
-        inst2 = BaseModel()
+        model2 = BaseModel()
         toc = datetime.utcnow()
-        self.assertTrue(tic <= inst2.created_at <= toc)
-        self.assertEqual(inst1.created_at, inst1.updated_at)
-        self.assertEqual(inst2.created_at, inst2.updated_at)
-        self.assertNotEqual(inst1.created_at, inst2.created_at)
-        self.assertNotEqual(inst1.updated_at, inst2.updated_at)
+        self.assertTrue(tic <= model2.created_at <= toc)
+        self.assertEqual(model1.created_at, model1.updated_at)
+        self.assertEqual(model2.created_at, model2.updated_at)
+        self.assertNotEqual(model1.created_at, model2.created_at)
+        self.assertNotEqual(model1.updated_at, model2.updated_at)
 
     def test_uuid(self):
         """Test that id is a valid uuid"""

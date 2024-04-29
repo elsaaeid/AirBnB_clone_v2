@@ -21,10 +21,10 @@ def list_states():
         HTML Page
     """
     dict_states = storage.all(State)
-    states = []
+    all_states = []
     for k, v in dict_states.items():
-        states.append(v)
-    return render_template('8-cities_by_states.html', states=states)
+        all_states.append(v)
+    return render_template('8-cities_by_states.html', all_states = all_states)
 
 
 if __name__ == "__main__":

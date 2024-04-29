@@ -20,10 +20,10 @@ def list_states():
         HTML
     """
     dict_states = storage.all(State)
-    states = []
+    all_states = []
     for k, v in dict_states.items():
-        states.append(v)
-    return render_template('7-states_list.html', states=states)
+        all_states.append(v)
+    return render_template('7-states_list.html', all_states = all_states)
 
 
 if __name__ == "__main__":
