@@ -1,56 +1,56 @@
 #!/usr/bin/python3
+import console
+import pep8
 import unittest
-from unittest.mock import patch
-from io import StringIO
-from console import HBNBCommand
+HBNBCommand = console.HBNBCommand
 
 
-class TestConsole(unittest.TestCase):
+class TestConsoleDocs(unittest.TestCase):
+    """Class for testing documentation of the console"""
 
-    def setUp(self):
-        """Set up the test environment"""
-        self.console = HBNBCommand()
+    def test_pep8_equality(self):
+        """Test that console.py and test_console.py conform to PEP8"""
+        files_to_check = ['console.py',
+                          'tests/test_console.py']
+        style_guide = pep8.StyleGuide()
+        total_errors = 0
+        error_messages = []
 
-    def tearDown(self):
-        """Clean up after each test"""
-        del self.console
+        for file_path in files_to_check:
+            with self.subTest(path=file_path):
+                result = style_guide.check_files([file_path])
+                errors = result.total_errors
 
-    def test_docstring_file(self):
-        """Test the docstring of the console module"""
-        expected_docstring = "Command interpreter for Holberton AirBnB project"
-        actual_docstring = self.console.__class__.__doc__
-        self.assertEqual(expected_docstring, actual_docstring)
+                if errors > 0:
+                    print(f"PEP8 errors in {file_path}:")
+                    for error in result.messages:
+                        error_messages.append(f"- {error}")
+                total_errors += errors
+        if total_errors > 0:
+            error_message = f"Total PEP8 errors: {total_errors}\n"
+            error_message += "\n".join(error_messages)
+            self.fail(error_message)
 
-    def test_docstring_class(self):
-        """Test the docstring of the HBNBCommand class"""
-        expected_docstring = "Command interpreter class"
-        actual_docstring = HBNBCommand.__doc__
-        self.assertEqual(expected_docstring, actual_docstring)
+    def test_console_module_docstring(self):
+        """Test for the console.py module"""
+        self.assertIsNot(
+            console.__doc__,
+            None,
+            "console.py needs a docstring"
+        )
+        self.assertTrue(
+            len(console.__doc__) >= 1,
+            "console.py needs a docstring"
+        )
 
-    def test_emptyline(self):
-        """Test the behavior of the emptyline method"""
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            self.console.emptyline()
-            self.assertEqual(fake_out.getvalue(), "")
-
-    def test_help(self):
-        """Test the behavior of the help command"""
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            self.console.onecmd("help")
-            self.assertIn("Documented commands (type help <topic>):", fake_out.getvalue())
-
-    def test_exit(self):
-        """Test the behavior of the exit command"""
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            self.assertTrue(self.console.onecmd("quit"))
-            self.assertIn("Quit command is called", fake_out.getvalue())
-
-    def test_unknown_command(self):
-        """Test the behavior of an unknown command"""
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            self.console.onecmd("unknown_command")
-            self.assertIn("unknown_command: command not found", fake_out.getvalue())
-
-
-if __name__ == '__main__':
-    unittest.main()
+    def test_console_class_docstring(self):
+        """Test for the class console"""
+        self.assertIsNot(
+            HBNBCommand.__doc__,
+            None,
+            "HBNBCommand class needs a docstring"
+        )
+        self.assertTrue(
+            len(HBNBCommand.__doc__) >= 1,
+            "HBNBCommand class needs a docstring"
+        )

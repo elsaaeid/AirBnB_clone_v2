@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 import unittest
+from datetime import datetime
 from models.review import Review
-from models.engine.file_storage import FileStorage
 from models import storage
 import inspect
 import models
 from models.base_model import BaseModel
 import pep8
+
 
 class TestReviewDocs(unittest.TestCase):
     """Tests to check the documentation and style of Review class"""
@@ -16,25 +17,28 @@ class TestReviewDocs(unittest.TestCase):
         """Set up for the doc tests"""
         cls.review_functions = inspect.getmembers(Review, inspect.isfunction)
 
-    def test_pep8_equality_review(self):
-        """Test that models/review.py conforms to PEP8."""
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files(['models/review.py'])
-        self.assertEqual(
-            result.total_errors,
-            0,
-            "Found code style errors (and warnings)."
-        )
+    def test_pep8_equality(self):
+        """Test that review.py and test_review.py conform to PEP8"""
+        files_to_check = ['models/review.py',
+                          'tests/test_models/test_review.py']
+        style_guide = pep8.StyleGuide()
+        total_errors = 0
+        error_messages = []
 
-    def test_pep8_equality_test_review(self):
-        """Test that tests/test_models/test_review.py conforms to PEP8."""
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files(['tests/test_models/test_review.py'])
-        self.assertEqual(
-            result.total_errors,
-            0,
-            "Found code style errors (and warnings)."
-        )
+        for file_path in files_to_check:
+            with self.subTest(path=file_path):
+                result = style_guide.check_files([file_path])
+                errors = result.total_errors
+
+                if errors > 0:
+                    print(f"PEP8 errors in {file_path}:")
+                    for error in result.messages:
+                        error_messages.append(f"- {error}")
+                total_errors += errors
+        if total_errors > 0:
+            error_message = f"Total PEP8 errors: {total_errors}\n"
+            error_message += "\n".join(error_messages)
+            self.fail(error_message)
 
     def test_review_module_docstring(self):
         """Test for the review.py module docstring"""
@@ -74,58 +78,59 @@ class TestReviewDocs(unittest.TestCase):
             )
 
 
-
 class TestReview(unittest.TestCase):
     """Test the Review class"""
 
     def test_is_subclass(self):
-        """Test if Review is a subclass of BaseModel"""
+        """Test that Review is a subclass of BaseModel"""
         review = Review()
         self.assertIsInstance(review, BaseModel)
         self.assertTrue(hasattr(review, "id"))
         self.assertTrue(hasattr(review, "created_at"))
         self.assertTrue(hasattr(review, "updated_at"))
 
-    def test_review_instance(self):
-        """Test if Review is an instance of the Review class"""
-        review = Review()
-        self.assertIsInstance(review, Review)
+    def setUp(self):
+        """Set up the test environment"""
+        self.review = Review()
 
     def test_review_attributes(self):
         """Test Review attributes"""
-        self.assertTrue(hasattr(self.review, "place_id"))
-        self.assertTrue(hasattr(self.review, "user_id"))
-        self.assertTrue(hasattr(self.review, "text"))
+        review = self.review
+        self.assertTrue(hasattr(review, "place_id"))
+        self.assertTrue(hasattr(review, "user_id"))
+        self.assertTrue(hasattr(review, "text"))
         if models.storage_type == 'db':
-            self.assertIsNone(self.review.place_id)
-            self.assertIsNone(self.review.user_id)
-            self.assertIsNone(self.review.text)
+            self.assertIsNone(review.place_id)
+            self.assertIsNone(review.user_id)
+            self.assertIsNone(review.text)
         else:
-            self.assertEqual(self.review.place_id, "")
-            self.assertEqual(self.review.user_id, "")
-            self.assertEqual(self.review.text, "")
+            self.assertEqual(review.place_id, "")
+            self.assertEqual(review.user_id, "")
+            self.assertEqual(review.text, "")
 
-    def test_to_dict_creates_dict(self):
-        """test to_dict method creates a dictionary with proper attrs"""
-        r = Review()
-        new_d = r.to_dict()
-        self.assertEqual(type(new_d), dict)
-        self.assertFalse("_sa_instance_state" in new_d)
-        for attr in r.__dict__:
-            if attr is not "_sa_instance_state":
-                self.assertTrue(attr in new_d)
-        self.assertTrue("__class__" in new_d)
+    def test_to_dict(self):
+        """test to_dict method creates a dictionary"""
+        review = Review()
+        new_dict = review.to_dict()
+        self.assertEqual(type(new_dict), dict)
+        self.assertFalse("_sa_instance_state" in new_dict)
+        for attr in review.__dict__:
+            if attr != "_sa_instance_state":
+                self.assertTrue(attr in new_dict)
+        self.assertTrue("__class__" in new_dict)
 
     def test_to_dict_values(self):
         """test that values in dict returned from to_dict are correct"""
-        t_format = "%Y-%m-%dT%H:%M:%S.%f"
-        r = Review()
-        new_d = r.to_dict()
-        self.assertEqual(new_d["__class__"], "Review")
-        self.assertEqual(type(new_d["created_at"]), str)
-        self.assertEqual(type(new_d["updated_at"]), str)
-        self.assertEqual(new_d["created_at"], r.created_at.strftime(t_format))
-        self.assertEqual(new_d["updated_at"], r.updated_at.strftime(t_format))
+        format_t = "%Y-%m-%dT%H:%M:%S.%f"
+        review = Review()
+        new_dict = review.to_dict()
+        self.assertEqual(new_dict["__class__"], "Review")
+        self.assertEqual(type(new_dict["created_at"]), str)
+        self.assertEqual(type(new_dict["updated_at"]), str)
+        self.assertEqual(new_dict["created_at"],
+                         review.created_at.strftime(format_t))
+        self.assertEqual(new_dict["updated_at"],
+                         review.updated_at.strftime(format_t))
 
     def test_str(self):
         """test that the str method has the correct output"""
@@ -142,6 +147,14 @@ class TestReview(unittest.TestCase):
         all_reviews = storage.all(Review)
         review_key = "Review." + self.review.id
         self.assertIn(review_key, all_reviews)
+
+    @unittest.skipIf(models.storage_type == 'db', 'skip if environ is db')
+    def test_updated_at_save(self):
+        """Test function to save updated_at attribute"""
+        self.review.save()
+        actual = type(self.review.updated_at)
+        expected = type(datetime.now())
+        self.assertEqual(expected, actual)
 
     def test_review_storage(self):
         """Test if Review is correctly stored in the storage"""
