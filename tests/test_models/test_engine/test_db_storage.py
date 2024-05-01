@@ -3,28 +3,16 @@ import unittest
 import inspect
 import models
 from models.engine import db_storage
-from models.amenity import Amenity
-from models.city import City
-from models.place import Place
-from models.review import Review
-from models.state import State
-from models.user import User
 import pep8
 from models.base_model import BaseModel
-
 DBStorage = db_storage.DBStorage
-classes = {
-    "Amenity": Amenity,
-    "City": City,
-    "Place": Place,
-    "Review": Review,
-    "State": State,
-    "User": User
-}
+classes = db_storage.DBStorage.classes
 
 
 class TestDBStorageDocs(unittest.TestCase):
-    """Tests to check the documentation and style of DBStorage class"""
+    """Tests to check the documentation
+    and style of DBStorage class
+    """
 
     @classmethod
     def setUpClass(cls):
