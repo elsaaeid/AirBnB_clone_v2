@@ -1,9 +1,8 @@
 #!/usr/bin/python3
-
 """this the entry point of the command interpreter"""
-
 import cmd
 from models import storage, classes
+import shlex
 
 
 class HBNBCommand(cmd.Cmd):
@@ -128,39 +127,27 @@ class HBNBCommand(cmd.Cmd):
             print(my_list)
 
     def do_update(self, arg):
-        """Updates an instance based on the class name and id"""
-        if not arg:
-            print("** class name missing **")
-            return
-
-        args = arg.split()
-        class_name = args[0]
-        if class_name not in classes:
-            print("** class doesn't exist **")
-            return
-
-        if len(args) < 2:
+        """Updates an instance based on
+        its ID with a dictionary representation."""
+        my_arg = shlex.split(arg)
+        if len(my_arg) < 2:
             print("** instance id missing **")
             return
-
-        instance_id = args[1]
-        key = class_name + "." + instance_id
+        if my_arg[0] not in classes:
+            print("** class doesn't exist **")
+            return
+        key = my_arg[0] + "." + my_arg[1]
         if key not in storage.all():
             print("** no instance found **")
             return
-
-        if len(args) < 3:
+        if len(my_arg) < 3:
             print("** attribute name missing **")
             return
-
-        attribute_name = args[2]
-        if len(args) < 4:
+        if len(my_arg) < 4:
             print("** value missing **")
             return
-
-        attribute_value = args[3]
         instance = storage.all()[key]
-        setattr(instance, attribute_name, attribute_value)
+        setattr(instance, my_arg[2], my_arg[3])
         instance.save()
 
     def do_count(self, arg):
