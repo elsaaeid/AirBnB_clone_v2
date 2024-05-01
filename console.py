@@ -127,28 +127,45 @@ class HBNBCommand(cmd.Cmd):
             print(my_list)
 
     def do_update(self, arg):
-        """Updates an instance based on
-        its ID with a dictionary representation."""
-        my_arg = shlex.split(arg)
-        if len(my_arg) < 2:
-            print("** instance id missing **")
+        """Updates an instance based on its
+        ID with a dictionary representation."""
+        if not arg:
+            print("** class name missing **")
             return
-        if my_arg[0] not in classes:
+
+        args = shlex.split(arg)
+        class_name = args[0]
+        if class_name not in classes:
             print("** class doesn't exist **")
             return
-        key = my_arg[0] + "." + my_arg[1]
-        if key not in storage.all():
+
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+
+        instance_id = args[1]
+        key = class_name + "." + instance_id
+        if key in storage.all():
+            instance = storage.all()[key]
+            if len(args) < 3:
+                print("** attribute name missing **")
+                return
+            if len(args) < 4:
+                print("** value missing **")
+                return
+            attribute_name = args[2]
+            attribute_value = args[3]
+            # Check if the attribute exists in the instance
+            if hasattr(instance, attribute_name):
+                # Update the attribute with the new value
+                setattr(instance, attribute_name, attribute_value)
+                instance.save()
+            else:
+                # If the attribute doesn't exist, add it to the instance
+                setattr(instance, attribute_name, attribute_value)
+                instance.save()
+        else:
             print("** no instance found **")
-            return
-        if len(my_arg) < 3:
-            print("** attribute name missing **")
-            return
-        if len(my_arg) < 4:
-            print("** value missing **")
-            return
-        instance = storage.all()[key]
-        setattr(instance, my_arg[2], my_arg[3])
-        instance.save()
 
     def do_count(self, arg):
         """Counts all instances based on class name."""
