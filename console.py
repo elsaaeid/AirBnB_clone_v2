@@ -111,7 +111,6 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        my_dict = "{" + args.split("{")[1]
         arg = shlex.split(args)
         storage.reload()
         obj = storage.all()
@@ -128,18 +127,19 @@ class HBNBCommand(cmd.Cmd):
         except KeyError:
             print("** no instance found **")
             return
-        if (my_dict == "{"):
+        if (len(arg) == 2):
             print("** attribute name missing **")
             return
-        my_dict = my_dict.replace("\'", "\"")
-        my_dict = json.loads(my_dict)
-        obj_inst = obj[obj_key]
-        for k in my_dict:
-            if hasattr(obj_inst, k):
-                d_type = type(getattr(obj_inst, k))
-                setattr(obj_inst, k, my_dict[k])
-            else:
-                setattr(obj_inst, k, my_dict[k])
+        if (len(arg) == 3):
+            print("** value missing **")
+            return
+        obj_dict = obj[obj_key].__dict__
+        if arg[2] in obj_dict.keys():
+            d_type = type(obj_dict[arg[2]])
+            print(d_type)
+            obj_dict[arg[2]] = type(obj_dict[arg[2]])(arg[3])
+        else:
+            obj_dict[arg[2]] = arg[3]
         storage.save()
 
     def do_count(self, arg):
