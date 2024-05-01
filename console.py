@@ -37,21 +37,22 @@ class HBNBCommand(cmd.Cmd):
             print("class doesn't exist")
 
     def do_show(self, arg):
-        """show is a command used for an existing instance."""
+        """show is command used for an existing instance."""
         my_arg = arg.split(" ")
         if not arg:
             print("class name missing")
-        elif len(my_arg) < 2:
-            print("instance id missing")
         elif my_arg[0] not in classes:
             print("class doesn't exist")
-        else:
+        elif len(my_arg) >= 1:
             try:
-                my_objects = self.all(classes[my_arg[0]])
-                my_key = "{}.{}".format(my_arg[0], my_arg[1])
-                if my_key in my_objects:
-                    print(my_objects[my_key])
-                else:
+                my_objects = storage.all(self)
+                my_key = my_arg[0] + "." + my_arg[1]
+                flag = 0
+                for key, values in my_objects.items():
+                    if key == my_key:
+                        flag = 1
+                        print(values)
+                if flag == 0:
                     print("no instance found")
             except IndexError:
                 print("instance id missing")
@@ -121,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
                     my_values = my_objects.get(key)
                     setattr(values, my_arg[2], my_arg[3])
                     values.save()
-                    print(my_values)
+                    print("no instance found")
             if flag == 0:
                 print("no instance found")
 
