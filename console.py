@@ -3,7 +3,8 @@
 import cmd
 from models import storage, classes
 import shlex
-import models
+import json
+
 
 class HBNBCommand(cmd.Cmd):
     """this class for the command interpreter"""
@@ -104,34 +105,42 @@ class HBNBCommand(cmd.Cmd):
                     my_list.append(str(values))
             print(my_list)
 
-    def do_update(self, arg):
+    def do_update(self, args):
         """Update an instance based on the class name,
         ID, and dictionary representation"""
-        args = shlex.split(arg)
-        if len(args) < 3:
-            print("** insufficient arguments **")
+        if not args:
+            print("** class name missing **")
             return
-        class_name, instance_id, *updates = args
-        if class_name not in classes:
+        my_dict = "{" + args.split("{")[1]
+        arg = shlex.split(args)
+        storage.reload()
+        obj = storage.all()
+
+        if arg[0] not in classes.keys():
             print("** class doesn't exist **")
             return
-        instance = models.storage.get(class_name, instance_id)
-        if instance is None:
-            print("** no instance found **")
+        if len(arg) == 1:
+            print("** instance id missing **")
             return
         try:
-            updates_dict = eval("{" + ", ".join(updates) + "}")
-        except SyntaxError:
-            print("** invalid dictionary representation **")
+            obj_key = arg[0] + "." + arg[1]
+            obj[obj_key]
+        except KeyError:
+            print("** no instance found **")
             return
-        for key, value in updates_dict.items():
-            if hasattr(instance, key):
-                setattr(instance, key, value)
+        if (my_dict == "{"):
+            print("** attribute name missing **")
+            return
+        my_dict = my_dict.replace("\'", "\"")
+        my_dict = json.loads(my_dict)
+        obj_inst = obj[obj_key]
+        for k in my_dict:
+            if hasattr(obj_inst, k):
+                d_type = type(getattr(obj_inst, k))
+                setattr(obj_inst, k, my_dict[k])
             else:
-                print(f"** invalid attribute: {key} **")
-                return
-        instance.save()
-        print("OK")
+                setattr(obj_inst, k, my_dict[k])
+        storage.save()
 
     def do_count(self, arg):
         """Counts all instances based on class name."""
