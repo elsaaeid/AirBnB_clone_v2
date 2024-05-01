@@ -3,6 +3,8 @@ import console
 import pep8
 import unittest
 HBNBCommand = console.HBNBCommand
+from unittest.mock import patch
+from io import StringIO
 
 
 class TestConsoleDocs(unittest.TestCase):
@@ -54,3 +56,34 @@ class TestConsoleDocs(unittest.TestCase):
             len(HBNBCommand.__doc__) >= 1,
             "HBNBCommand class needs a docstring"
         )
+
+
+class TestConsole(unittest.TestCase):
+    @patch('sys.stdout', new_callable=StringIO)
+    def assert_stdout(self, command, expected_output, mock_stdout):
+        HBNBCommand().onecmd(command)
+        self.assertEqual(mock_stdout.getvalue().strip(), expected_output)
+
+    def test_help_show(self):
+        with patch('sys.stdout', new=StringIO()) as mock_stdout:
+            HBNBCommand().onecmd("help show")
+            self.assertIn("Prints the string representation of an instance",
+                          mock_stdout.getvalue())
+
+    def test_create(self):
+        self.assert_stdout("create BaseModel",
+                           "38f22813-2753-4d42-b37c-57a17f1e4f88")
+
+    def test_show(self):
+        self.assert_stdout("show BaseModel",
+                           "<instance details>")
+    
+    def test_destroy(self):
+        self.assert_stdout("destroy BaseModel", "")
+
+    def test_all(self):
+        self.assert_stdout("all BaseModel",
+                           "<all instances>")
+    
+    def test_update(self):
+        self.assert_stdout("update BaseModel {'name': 'New Name'}", "")
