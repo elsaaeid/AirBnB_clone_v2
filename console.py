@@ -127,41 +127,31 @@ class HBNBCommand(cmd.Cmd):
             print(my_list)
 
     def do_update(self, arg):
-        """Updates an instance based on its
-        ID with a dictionary representation."""
+        """Update an instance based on the class name,
+        ID, and dictionary representation"""
         args = shlex.split(arg)
-        if len(args) < 4:
+        if len(args) < 3:
             print("** insufficient arguments **")
             return
-
-        class_name, instance_id, attribute_name, attribute_value = args[:4]
-        valid_attributes = ["number_rooms", "number_bathrooms", "max_guest",
-                            "price_by_night", "latitude", "longitude"]
-
+        class_name, instance_id, *updates = args
         if class_name not in classes:
             print("** class doesn't exist **")
             return
-
         instance = models.storage.get(class_name, instance_id)
         if instance is None:
             print("** no instance found **")
             return
-
-        if attribute_name not in valid_attributes:
-            print("** invalid attribute name **")
-            return
-
         try:
-            if attribute_name in ["number_rooms", "number_bathrooms",
-                                  "max_guest", "price_by_night"]:
-                attribute_value = int(attribute_value)
-            elif attribute_name in ["latitude", "longitude"]:
-                attribute_value = float(attribute_value)
-        except ValueError:
-            print(f"** invalid value for {attribute_name} attribute **")
+            updates_dict = eval("{" + ", ".join(updates) + "}")
+        except SyntaxError:
+            print("** invalid dictionary representation **")
             return
-
-        setattr(instance, attribute_name, attribute_value)
+        for key, value in updates_dict.items():
+            if hasattr(instance, key):
+                setattr(instance, key, value)
+            else:
+                print(f"** invalid attribute: {key} **")
+                return
         instance.save()
         print("OK")
 
