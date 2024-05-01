@@ -26,7 +26,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, arg):
         """create is command used to create a new instance."""
         if not arg:
-            print("** class name missing **")
+            print("class name missing")
         elif arg in classes:
             for key, value in classes.items():
                 if key == arg:
@@ -34,37 +34,36 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
             print(new_instance.id)
         else:
-            print("** class doesn't exist **")
+            print("class doesn't exist")
 
     def do_show(self, arg):
-        """show is command used for an existing instance."""
+        """show is a command used for an existing instance."""
         my_arg = arg.split(" ")
         if not arg:
-            print("** class name missing **")
+            print("class name missing")
+        elif len(my_arg) < 2:
+            print("instance id missing")
         elif my_arg[0] not in classes:
-            print("** class doesn't exist **")
-        elif len(my_arg) >= 1:
+            print("class doesn't exist")
+        else:
             try:
-                my_objects = storage.all(self)
-                my_key = my_arg[0] + "." + my_arg[1]
-                flag = 0
-                for key, values in my_objects.items():
-                    if key == my_key:
-                        flag = 1
-                        print(values)
-                if flag == 0:
-                    print("** no instance found **")
+                my_objects = self.all(classes[my_arg[0]])
+                my_key = "{}.{}".format(my_arg[0], my_arg[1])
+                if my_key in my_objects:
+                    print(my_objects[my_key])
+                else:
+                    print("no instance found")
             except IndexError:
-                print("** instance id missing **")
+                print("instance id missing")
 
     def do_destroy(self, arg):
         """This deletes an instance based on class and id."""
 
         my_arg = arg.split(" ")
         if not arg:
-            print("** class name missing **")
+            print("class name missing")
         elif my_arg[0] not in classes:
-            print("** class doesn't exist **")
+            print("class doesn't exist")
         elif len(my_arg) >= 1:
             try:
                 my_objects = storage.all(self)
@@ -73,9 +72,9 @@ class HBNBCommand(cmd.Cmd):
                     my_objects.pop(my_key)
                     storage.save()
                 except KeyError:
-                    print("** no instance found **")
+                    print("no instance found")
             except IndexError:
-                print("** instance id missing **")
+                print("instance id missing")
 
     def do_all(self, arg):
         """This shows all instances based on class name."""
@@ -88,7 +87,7 @@ class HBNBCommand(cmd.Cmd):
                 my_list.append(str(values))
             print(my_list)
         elif my_arg[0] not in classes:
-            print("** class doesn't exist **")
+            print("class doesn't exist")
         else:
             my_list = []
             my_objects = storage.all(self)
@@ -103,15 +102,15 @@ class HBNBCommand(cmd.Cmd):
 
         my_arg = shlex.split(arg)
         if len(my_arg) == 0:
-            print("** class name missing **")
+            print("class name missing")
         elif len(my_arg) == 1:
-            print("** instance id missing **")
+            print("instance id missing")
         elif len(my_arg) == 2:
-            print("** attribute name missing **")
+            print("attribute name missing")
         elif len(my_arg) == 3:
-            print("** value missing **")
+            print("value missing")
         elif my_arg[0] not in classes:
-            print("** class doesn't exist **")
+            print("class doesn't exist")
         else:
             my_objects = storage.all(self)
             my_key = my_arg[0] + "." + my_arg[1]
@@ -122,8 +121,9 @@ class HBNBCommand(cmd.Cmd):
                     my_values = my_objects.get(key)
                     setattr(values, my_arg[2], my_arg[3])
                     values.save()
+                    print(my_values)
             if flag == 0:
-                print("** no instance found **")
+                print("no instance found")
 
     def do_count(self, arg):
         """This counts all instances based on class name."""
@@ -135,7 +135,7 @@ class HBNBCommand(cmd.Cmd):
                 my_list.append(str(values))
             print(my_list)
         elif my_arg[0] not in classes:
-            print("** class doesn't exist **")
+            print("class doesn't exist")
         else:
             my_list = []
             my_objects = storage.all(self)
@@ -170,11 +170,11 @@ class HBNBCommand(cmd.Cmd):
                 my_arg3 = my_arg3.replace('"', ' ')
                 my_arg3 = my_arg3.split(',')
                 if len(my_arg3) == 0:
-                    print("** instance id missing **")
+                    print("instance id missing")
                 elif len(my_arg3) == 1:
-                    print("** attribute name missing **")
+                    print("attribute name missing")
                 elif len(my_arg3) == 2:
-                    print("** value missing **")
+                    print("value missing")
                 else:
                     param = ("{} {} {} {}".format(the_class, my_arg3[0][9:],
                              my_arg3[1], my_arg3[2][1:-1]))
@@ -205,11 +205,11 @@ class HBNBCommand(cmd.Cmd):
                 my_arg3 = my_arg3.replace('"', ' ')
                 my_arg3 = my_arg3.split(',')
                 if len(my_arg3) == 0:
-                    print("** instance id missing **")
+                    print("instance id missing")
                 elif len(my_arg3) == 1:
-                    print("** attribute name missing **")
+                    print("attribute name missing")
                 elif len(my_arg3) == 2:
-                    print("** value missing **")
+                    print("value missing")
                 else:
                     param = ("{} {} {} {}".format(the_class, my_arg3[0][9:],
                              my_arg3[1], my_arg3[2][1:-1]))
@@ -240,11 +240,11 @@ class HBNBCommand(cmd.Cmd):
                 my_arg3 = my_arg3.replace('"', ' ')
                 my_arg3 = my_arg3.split(',')
                 if len(my_arg3) == 0:
-                    print("** instance id missing **")
+                    print("instance id missing")
                 elif len(my_arg3) == 1:
-                    print("** attribute name missing **")
+                    print("attribute name missing")
                 elif len(my_arg3) == 2:
-                    print("** value missing **")
+                    print("value missing")
                 else:
                     param = ("{} {} {} {}".format(the_class, my_arg3[0][9:],
                              my_arg3[1], my_arg3[2][1:-1]))
@@ -275,11 +275,11 @@ class HBNBCommand(cmd.Cmd):
                 my_arg3 = my_arg3.replace('"', ' ')
                 my_arg3 = my_arg3.split(',')
                 if len(my_arg3) == 0:
-                    print("** instance id missing **")
+                    print("instance id missing")
                 elif len(my_arg3) == 1:
-                    print("** attribute name missing **")
+                    print("attribute name missing")
                 elif len(my_arg3) == 2:
-                    print("** value missing **")
+                    print("value missing")
                 else:
                     param = ("{} {} {} {}".format(the_class, my_arg3[0][9:],
                              my_arg3[1], my_arg3[2][1:-1]))
@@ -310,11 +310,11 @@ class HBNBCommand(cmd.Cmd):
                 my_arg3 = my_arg3.replace('"', ' ')
                 my_arg3 = my_arg3.split(',')
             if len(my_arg3) == 0:
-                print("** instance id missing **")
+                print("instance id missing")
             elif len(my_arg3) == 1:
-                print("** attribute name missing **")
+                print("attribute name missing")
             elif len(my_arg3) == 2:
-                print("** value missing **")
+                print("value missing")
             else:
                 param = ("{} {} {} {}".format(the_class, my_arg3[0][9:],
                          my_arg3[1], my_arg3[2][1:-1]))
@@ -345,11 +345,11 @@ class HBNBCommand(cmd.Cmd):
                 my_arg3 = my_arg3.replace('"', ' ')
                 my_arg3 = my_arg3.split(',')
                 if len(my_arg3) == 0:
-                    print("** instance id missing **")
+                    print("instance id missing")
                 elif len(my_arg3) == 1:
-                    print("** attribute name missing **")
+                    print("attribute name missing")
                 elif len(my_arg3) == 2:
-                    print("** value missing **")
+                    print("value missing")
                 else:
                     param = ("{} {} {} {}".format(the_class, my_arg3[0][9:],
                              my_arg3[1], my_arg3[2][1:-1]))
@@ -380,11 +380,11 @@ class HBNBCommand(cmd.Cmd):
                 my_arg3 = my_arg3.replace('"', ' ')
                 my_arg3 = my_arg3.split(',')
                 if len(my_arg3) == 0:
-                    print("** instance id missing **")
+                    print("instance id missing")
                 elif len(my_arg3) == 1:
-                    print("** attribute name missing **")
+                    print("attribute name missing")
                 elif len(my_arg3) == 2:
-                    print("** value missing **")
+                    print("value missing")
                 else:
                     param = ("{} {} {} {}".format(the_class, my_arg3[0][9:],
                              my_arg3[1], my_arg3[2][1:-1]))

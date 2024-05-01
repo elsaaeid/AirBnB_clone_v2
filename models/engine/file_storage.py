@@ -12,7 +12,8 @@ from models.user import User
 
 
 class FileStorage:
-    """Serializes instances to a JSON file
+    """
+    Serializes instances to a JSON file
     and deserializes back to instances
     """
     classes = {
