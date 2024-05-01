@@ -8,7 +8,6 @@ import models
 class HBNBCommand(cmd.Cmd):
     """this class for the command interpreter"""
     prompt = '(hbnb)'
-    file = None
 
     def do_EOF(self, arg):
         """EOF is command used to exit the program"""
@@ -89,19 +88,18 @@ class HBNBCommand(cmd.Cmd):
         my_arg = arg.split(" ")
         if not arg:
             my_list = []
-            my_objects = storage.all(self)
-            for key, values in my_objects.items():
-                my_list.append(str(values))
+            my_objects = storage.all()
+            for value in my_objects.values():
+                my_list.append(str(value))
             print(my_list)
         elif my_arg[0] not in classes:
-            print("class doesn't exist")
+            print("Class doesn't exist")
         else:
             my_list = []
-            my_objects = storage.all(self)
-            for key, values in my_objects.items():
-                my_key = key.split(".")
-                if my_key[0] == my_arg[0]:
-                    my_list.append(str(values))
+            my_objects = storage.all()
+            for value in my_objects.values():
+                if value.__class__.__name__ == my_arg[0]:
+                    my_list.append(str(value))
             print(my_list)
 
     def do_update(self, arg):
