@@ -164,23 +164,24 @@ class HBNBCommand(cmd.Cmd):
         instance.save()
 
     def do_count(self, arg):
-        """This counts all instances based on class name."""
+        """Counts all instances based on class name."""
         count = 0
         my_arg = arg.split(" ")
         if not arg:
-            my_objects = storage.all(self)
-            for key, values in my_objects.items():
-                my_list.append(str(values))
+            my_list = []
+            my_objects = storage.all()
+            for key, value in my_objects.items():
+                my_list.append(str(value))
             print(my_list)
         elif my_arg[0] not in classes:
-            print("class doesn't exist")
+            print("** class doesn't exist **")
         else:
-            my_list = []
-            my_objects = storage.all(self)
-            for key, values in my_objects.items():
+            my_objects = storage.all()
+            for key, value in my_objects.items():
                 my_key = key.split(".")
                 if my_key[0] == my_arg[0]:
-                    count += 1
+                    if value.__class__.__name__ == my_arg[0]:
+                        count += 1
             print(count)
 
     def do_BaseModel(self, arg):
