@@ -2,6 +2,7 @@
 """FileStorage class"""
 
 import json
+from models.base_model import BaseModel
 from models.amenity import Amenity
 from models.city import City
 from models.place import Place
@@ -15,6 +16,7 @@ class FileStorage:
     and deserializes back to instances
     """
     classes = {
+        "BaseModel": BaseModel,
         "Amenity": Amenity,
         "City": City,
         "Place": Place,
@@ -48,7 +50,7 @@ class FileStorage:
             with open(self.__file_path, 'r') as f:
                 data = json.load(f)
                 self.__objects = {
-                    key: classes[value['__class__']](**value) for key, value in data.items()
+                    key: self.classes[value['__class__']](**value) for key, value in data.items()
                 }
         except Exception:
             pass
@@ -65,7 +67,7 @@ class FileStorage:
 
     def get(self, cls, id):
         """Retrieves an object based on class and id"""
-        if cls in classes.values() and isinstance(id, str):
+        if cls in self.classes.values() and isinstance(id, str):
             for obj in self.all(cls).values():
                 if obj.id == id:
                     return obj

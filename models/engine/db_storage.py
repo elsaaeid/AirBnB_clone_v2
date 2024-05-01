@@ -22,6 +22,7 @@ hbnb_env = getenv("HBNB_ENV")
 class DBStorage:
     """class DBStorage"""
     classes = {
+    "BaseModel": BaseModel,
     "Amenity": Amenity,
     "City": City,
     "Place": Place,
@@ -44,8 +45,8 @@ class DBStorage:
         """return dictionary of instance attributes"""
         new_dict = {}
         if cls:
-            if isinstance(cls, str) and cls in classes:
-                for obj in self.__session.query(classes[cls]).all():
+            if isinstance(cls, str) and cls in self.classes:
+                for obj in self.__session.query(self.classes[cls]).all():
                     key = "{}.{}".format(obj.__class__.__name__, obj.id)
                     new_dict[key] = obj
             elif isinstance(cls, type) and issubclass(cls, BaseModel):
@@ -53,7 +54,7 @@ class DBStorage:
                     key = "{}.{}".format(obj.__class__.__name__, obj.id)
                     new_dict[key] = obj
         else:
-            for cls in classes.values():
+            for cls in self.classes.values():
                 for obj in self.__session.query(cls).all():
                     key = "{}.{}".format(obj.__class__.__name__, obj.id)
                     new_dict[key] = obj
@@ -87,7 +88,7 @@ class DBStorage:
 
     def get(self, cls, id):
         """ retrieves """
-        if cls in classes.values() and id and type(id) == str:
+        if cls in self.classes.values() and id and type(id) == str:
             d_obj = self.all(cls)
             for key, value in d_obj.items():
                 if key.split(".")[1] == id:
@@ -97,6 +98,6 @@ class DBStorage:
     def count(self, cls=None):
         """ counts """
         data = self.all(cls)
-        if cls in classes.values():
+        if cls in self.classes.values():
             data = self.all(cls)
         return len(data)
