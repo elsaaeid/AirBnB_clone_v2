@@ -129,39 +129,40 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, arg):
         """Updates an instance based on its
         ID with a dictionary representation."""
-        if not arg:
-            print("** class name missing **")
+        args = shlex.split(arg)
+        if len(args) < 4:
+            print("** insufficient arguments **")
             return
 
-        args = shlex.split(arg)
-        class_name = args[0]
+        class_name, instance_id, attribute_name, attribute_value = args[:4]
+        valid_attributes = ["number_rooms", "number_bathrooms", "max_guest",
+                            "price_by_night", "latitude", "longitude"]
+
         if class_name not in classes:
             print("** class doesn't exist **")
             return
 
-        if len(args) < 2:
-            print("** instance id missing **")
-            return
-
-        instance_id = args[1]
-        key = class_name + "." + instance_id
         instance = models.storage.get(class_name, instance_id)
         if instance is None:
             print("** no instance found **")
             return
 
-        attribute_dict = {}
-        if len(args) % 2 != 0:
-            print("** invalid format **")
+        if attribute_name not in valid_attributes:
+            print("** invalid attribute name **")
             return
 
-        for i in range(2, len(args), 2):
-            attribute_name = args[i]
-            attribute_value = args[i + 1]
-            attribute_dict[attribute_name] = attribute_value
+        try:
+            if attribute_name in ["number_rooms", "number_bathrooms",
+                                  "max_guest", "price_by_night"]:
+                attribute_value = int(attribute_value)
+            elif attribute_name in ["latitude", "longitude"]:
+                attribute_value = float(attribute_value)
+        except ValueError:
+            print(f"** invalid value for {attribute_name} attribute **")
+            return
 
-        instance.update(attribute_dict)
-        models.storage.save()
+        setattr(instance, attribute_name, attribute_value)
+        instance.save()
         print("OK")
 
     def do_count(self, arg):
