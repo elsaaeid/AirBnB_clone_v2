@@ -4,25 +4,7 @@
 
 import cmd
 import shlex
-from models import storage
-from models.engine.file_storage import FileStorage
-from models.base_model import BaseModel
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
-
-classes = {
-    "BaseModel": BaseModel,
-    "Amenity": Amenity,
-    "City": City,
-    "Place": Place,
-    "Review": Review,
-    "State": State,
-    "User": User
-}
+from models import storage, classes
 
 
 class HBNBCommand(cmd.Cmd):
@@ -63,7 +45,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         elif len(my_arg) >= 1:
             try:
-                my_objects = FileStorage.all(self)
+                my_objects = storage.all(self)
                 my_key = my_arg[0] + "." + my_arg[1]
                 flag = 0
                 for key, values in my_objects.items():
@@ -85,7 +67,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         elif len(my_arg) >= 1:
             try:
-                my_objects = FileStorage.all(self)
+                my_objects = storage.all(self)
                 my_key = my_arg[0] + "." + my_arg[1]
                 try:
                     my_objects.pop(my_key)
@@ -101,7 +83,7 @@ class HBNBCommand(cmd.Cmd):
         my_arg = arg.split(" ")
         if not arg:
             my_list = []
-            my_objects = FileStorage.all(self)
+            my_objects = storage.all(self)
             for key, values in my_objects.items():
                 my_list.append(str(values))
             print(my_list)
@@ -109,7 +91,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             my_list = []
-            my_objects = FileStorage.all(self)
+            my_objects = storage.all(self)
             for key, values in my_objects.items():
                 my_key = key.split(".")
                 if my_key[0] == my_arg[0]:
@@ -131,7 +113,7 @@ class HBNBCommand(cmd.Cmd):
         elif my_arg[0] not in classes:
             print("** class doesn't exist **")
         else:
-            my_objects = FileStorage.all(self)
+            my_objects = storage.all(self)
             my_key = my_arg[0] + "." + my_arg[1]
             flag = 0
             for key, values in my_objects.items():
@@ -148,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
         count = 0
         my_arg = arg.split(" ")
         if not arg:
-            my_objects = FileStorage.all(self)
+            my_objects = storage.all(self)
             for key, values in my_objects.items():
                 my_list.append(str(values))
             print(my_list)
@@ -156,7 +138,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             my_list = []
-            my_objects = FileStorage.all(self)
+            my_objects = storage.all(self)
             for key, values in my_objects.items():
                 my_key = key.split(".")
                 if my_key[0] == my_arg[0]:
