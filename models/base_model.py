@@ -35,6 +35,13 @@ class BaseModel(Base):
         if 'password' in kwargs:
             self.password = md5(kwargs['password'].encode()).hexdigest()
 
+    def update(self, attribute_dict):
+        """Update the instance with the
+        provided attribute dictionary"""
+        for key, value in attribute_dict.items():
+            setattr(self, key, value)
+        self.save()
+
     def __str__(self):
         """Returns the string representation of the instance"""
         cls = type(self).__name__
