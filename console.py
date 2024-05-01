@@ -3,7 +3,7 @@
 import cmd
 from models import storage, classes
 import shlex
-
+import models
 
 class HBNBCommand(cmd.Cmd):
     """this class for the command interpreter"""
@@ -145,27 +145,24 @@ class HBNBCommand(cmd.Cmd):
 
         instance_id = args[1]
         key = class_name + "." + instance_id
-        if key in storage.all():
-            instance = storage.all()[key]
-            if len(args) < 3:
-                print("** attribute name missing **")
-                return
-            if len(args) < 4:
-                print("** value missing **")
-                return
-            attribute_name = args[2]
-            attribute_value = args[3]
-            # Check if the attribute exists in the instance
-            if hasattr(instance, attribute_name):
-                # Update the attribute with the new value
-                setattr(instance, attribute_name, attribute_value)
-                instance.save()
-            else:
-                # If the attribute doesn't exist, add it to the instance
-                setattr(instance, attribute_name, attribute_value)
-                instance.save()
-        else:
+        instance = models.storage.get(class_name, instance_id)
+        if instance is None:
             print("** no instance found **")
+            return
+
+        attribute_dict = {}
+        if len(args) % 2 != 0:
+            print("** invalid format **")
+            return
+
+        for i in range(2, len(args), 2):
+            attribute_name = args[i]
+            attribute_value = args[i + 1]
+            attribute_dict[attribute_name] = attribute_value
+
+        instance.update(attribute_dict)
+        models.storage.save()
+        print("OK")
 
     def do_count(self, arg):
         """Counts all instances based on class name."""
