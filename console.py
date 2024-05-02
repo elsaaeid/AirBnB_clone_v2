@@ -206,7 +206,9 @@ class HBNBCommand(cmd.Cmd):
         """Sends a command based on the class User"""
         the_class = "User"
         my_arg = arg.split(".")
-        if my_arg[1] == 'all()':
+        if my_arg[1] == 'create()':
+            self.do_create(the_class)
+        elif my_arg[1] == 'all()':
             self.do_all(the_class)
         elif my_arg[1] == 'count()':
             self.do_count(the_class)
