@@ -81,7 +81,8 @@ class BaseModel(Base):
                         obj_data['updated_at'] = format_updated
                         if 'password' in obj_data:
                             obj_data['password'] = md5(
-                                ['password'].encode()).hexdigest()
+                                obj_data['password'].encode()
+                                ).hexdigest()
                         instance = cls(**obj_data)
                         setattr(cls, obj_id, instance)
 

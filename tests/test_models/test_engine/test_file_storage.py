@@ -6,9 +6,10 @@ from models.engine import file_storage
 from models.base_model import BaseModel
 import json
 import pep8
-storage = models.storage
 from models.engine.file_storage import FileStorage
 classes = FileStorage.classes
+
+storage = models.storage
 
 
 class TestFileStorageDocs(unittest.TestCase):
@@ -67,34 +68,42 @@ class TestFileStorageDocs(unittest.TestCase):
             self.assertTrue(len(func[1].__doc__) >= 1,
                             f"{func[0]} method needs a docstring")
 
+
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
+    def setUp(self):
+        """Test initialization"""
+        self.storage = FileStorage()
+        self.storage.__objects = {}
 
-    @unittest.skipIf(models.storage_type == 'db', "not testing file storage")
+    @unittest.skipIf(models.storage_type == 'db',
+                     "not testing file storage")
     def test_all_returns_dict(self):
         """Test that all returns the FileStorage.__objects attr"""
         storage = FileStorage()
         new_dict = storage.all()
         self.assertEqual(type(new_dict), dict)
-        self.assertIs(new_dict, storage.__objects)
+        self.assertIs(new_dict, storage._FileStorage__objects)
 
-    @unittest.skipIf(models.storage_type == 'db', "not testing file storage")
+    @unittest.skipIf(models.storage_type == 'db',
+                     "not testing file storage")
     def test_new(self):
-        """Test that new adds an object to the FileStorage.__objects attr"""
+        """test that new adds an object to the FileStorage.__objects attr"""
         storage = FileStorage()
-        save = FileStorage.__objects
-        FileStorage.__objects = {}
+        save = FileStorage._FileStorage__objects
+        FileStorage._FileStorage__objects = {}
         test_dict = {}
         for key, value in classes.items():
             with self.subTest(key=key, value=value):
                 instance = value()
-                instance_key = f"{instance.__class__.__name__}.{instance.id}"
+                instance_key = instance.__class__.__name__ + "." + instance.id
                 storage.new(instance)
                 test_dict[instance_key] = instance
-                self.assertEqual(test_dict, storage.__objects)
-        FileStorage.__objects = save
+                self.assertEqual(test_dict, storage._FileStorage__objects)
+        FileStorage._FileStorage__objects = save
 
-    @unittest.skipIf(models.storage_type == 'db', "not testing file storage")
+    @unittest.skipIf(models.storage_type == 'db',
+                     "not testing file storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
         storage = FileStorage()
@@ -103,21 +112,32 @@ class TestFileStorage(unittest.TestCase):
             instance = value()
             instance_key = f"{instance.__class__.__name__}.{instance.id}"
             new_dict[instance_key] = instance
-        save = FileStorage.__objects
-        FileStorage.__objects = new_dict
+        original_objects = storage._FileStorage__objects
+        storage._FileStorage__objects = new_dict
+        
+        # Save to file.json
         storage.save()
-        FileStorage.__objects = save
+        
+        # Restore the original __objects
+        storage._FileStorage__objects = original_objects
+        
+        # Convert instances to dict and compare with file.json
         for key, value in new_dict.items():
             new_dict[key] = value.to_dict()
-        string = json.dumps(new_dict)
+        expected_json = json.dumps(new_dict)
+        
         with open("file.json", "r") as f:
-            js = f.read()
-        self.assertEqual(json.loads(string), json.loads(js))
+            actual_json = f.read()
+        
+        self.assertEqual(json.loads(expected_json), json.loads(actual_json))
 
-    @unittest.skipIf(models.storage_type == 'db', "not testing file storage")
+    @unittest.skipIf(models.storage_type == 'db',
+                     "not testing file storage")
     def test_get_and_count(self):
-        """Test that get retrieves objects stored in file.json and
-        count returns the right number of objects"""
+        """
+        Test that get retrieves objects stored in file.json and
+        count returns the right number of objects
+        """
         new_instance = BaseModel()
         models.storage_type.new(new_instance)
         models.storage_type.save()

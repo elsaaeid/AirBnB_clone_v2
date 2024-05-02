@@ -31,7 +31,8 @@ class FileStorage:
     def all(self, cls=None):
         """Returns the dictionary __objects"""
         if cls:
-            return {key: value for key, value in self.__objects.items() if isinstance(value, cls)}
+            return {key: value for key, value in self.__objects.items()
+                    if isinstance(value, cls)}
         return self.__objects
 
     def new(self, obj):
@@ -41,7 +42,8 @@ class FileStorage:
 
     def save(self):
         """Serializes __objects to the JSON file (path: __file_path)"""
-        serialized = {key: value.to_dict() for key, value in self.__objects.items()}
+        serialized = {key: value.to_dict()
+                      for key, value in self.__objects.items()}
         with open(self.__file_path, 'w') as f:
             json.dump(serialized, f)
 
@@ -51,7 +53,8 @@ class FileStorage:
             with open(self.__file_path, 'r') as f:
                 data = json.load(f)
                 self.__objects = {
-                    key: self.classes[value['__class__']](**value) for key, value in data.items()
+                    key: self.classes[value['__class__']](**value)
+                    for key, value in data.items()
                 }
         except Exception:
             pass
