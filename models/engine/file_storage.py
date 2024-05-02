@@ -42,21 +42,22 @@ class FileStorage:
 
     def save(self):
         """Serializes __objects to the JSON file (path: __file_path)"""
-        serialized = {key: value.to_dict()
-                      for key, value in self.__objects.items()}
+        serialized = {}
+        for key, value in self.__objects.items():
+            serialized[key] = value.to_dict()
         with open(self.__file_path, 'w') as f:
             json.dump(serialized, f)
 
     def reload(self):
-        """Deserializes the JSON file to __objects"""
+        """Loads storage dictionary from file"""
         try:
             with open(self.__file_path, 'r') as f:
-                data = json.load(f)
-                self.__objects = {
-                    key: self.classes[value['__class__']](**value)
-                    for key, value in data.items()
-                }
-        except Exception:
+                temp = json.load(f)
+                for key, val in temp.items():
+                    class_name = val['__class__']
+                    if class_name in self.classes:
+                        self.all()[key] = self.classes[class_name](**val)
+        except FileNotFoundError:
             pass
 
     def delete(self, obj=None):
