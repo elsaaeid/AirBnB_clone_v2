@@ -3,7 +3,6 @@
 import cmd
 from models import storage, classes
 import shlex
-import models
 
 
 class HBNBCommand(cmd.Cmd):
@@ -114,33 +113,37 @@ class HBNBCommand(cmd.Cmd):
             print(my_list)
 
     def do_update(self, arg):
-        """Update an instance based on the class name,
-        ID, and dictionary representation"""
-        args = shlex.split(arg)
-        if len(args) < 3:
-            print("** insufficient arguments **")
+        """Update an instance based on its
+        ID with a dictionary representation"""
+        args = arg.split()
+        if not args:
+            print("** class name missing **")
             return
-        class_name, instance_id, *updates = args
+        class_name = args[0]
         if class_name not in classes:
             print("** class doesn't exist **")
             return
-        instance = models.storage.get(class_name, instance_id)
-        if instance is None:
-            print("** no instance found **")
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+        instance_id = args[1]
+        key_val_str = ' '.join(args[2:])
+        if not key_val_str:
+            print("** attribute dictionary missing **")
             return
         try:
-            updates_dict = eval("{" + ", ".join(updates) + "}")
-        except SyntaxError:
-            print("** invalid dictionary representation **")
-            return
-        for key, value in updates_dict.items():
-            if hasattr(instance, key):
-                setattr(instance, key, value)
+            attr_dict = eval(key_val_str)
+            if not isinstance(attr_dict, dict):
+                raise ValueError("Invalid attribute dictionary format")
+            instance = storage.get(class_name, instance_id)
+            if instance:
+                for key, value in attr_dict.items():
+                    setattr(instance, key, value)
+                instance.save()
             else:
-                print(f"** invalid attribute: {key} **")
-                return
-        instance.save()
-        print("OK")
+                print("** no instance found **")
+        except Exception as e:
+            print(f"Error updating instance: {str(e)}")
 
     def do_count(self, arg):
         """Counts all instances based on class name."""
