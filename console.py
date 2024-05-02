@@ -5,6 +5,7 @@ from models import storage, classes
 import shlex
 import models
 
+
 class HBNBCommand(cmd.Cmd):
     """this class for the command interpreter"""
     prompt = '(hbnb)'
