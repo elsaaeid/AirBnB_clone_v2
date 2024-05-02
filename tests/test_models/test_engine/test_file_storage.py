@@ -129,7 +129,8 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             actual_json = f.read()
 
-        self.assertEqual(json.loads(expected_json), json.loads(actual_json))
+        self.assertEqual(json.loads(expected_json),
+                         json.loads(actual_json))
 
     @unittest.skipIf(models.storage_type == 'db',
                      "not testing file storage")
@@ -138,11 +139,24 @@ class TestFileStorage(unittest.TestCase):
         Test that get retrieves objects stored in file.json and
         count returns the right number of objects
         """
+        # Create a new instance and save it
         new_instance = BaseModel()
         models.storage_type.new(new_instance)
         models.storage_type.save()
+
+        # Get the instance key and retrieve the instance
         instance_key = f"{new_instance.__class__.__name__}.{new_instance.id}"
-        retrieved_instance = models.storage_type.get(BaseModel, instance_key)
+        retrieved_instance = models.storage_type.get(BaseModel,
+                                                     instance_key)
+
+        # Assert that the retrieved instance is equal to the original instance
         self.assertEqual(new_instance, retrieved_instance)
-        self.assertEqual(models.storage_type.count(),
-                         len(models.storage_type.all()))
+
+        # Count the number of objects
+        count = models.storage_type.count()
+
+        # Get all objects
+        all_objects = models.storage_type.all()
+
+        # Assert that the count is equal to the length of all objects
+        self.assertEqual(count, len(all_objects))
