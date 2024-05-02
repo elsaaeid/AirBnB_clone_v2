@@ -34,6 +34,12 @@ class BaseModel(Base):
             setattr(self, key, value)
         if 'password' in kwargs:
             self.password = md5(kwargs['password'].encode()).hexdigest()
+        if 'created_at' in kwargs:
+            self.created_at = datetime.strptime(kwargs['created_at'],
+                                                "%Y-%m-%dT%H:%M:%S.%f")
+        if 'updated_at' in kwargs:
+            self.updated_at = datetime.strptime(kwargs['updated_at'],
+                                                "%Y-%m-%dT%H:%M:%S.%f")
 
     def update(self, attribute_dict):
         """Update the instance with the
