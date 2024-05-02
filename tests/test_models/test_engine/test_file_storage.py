@@ -3,13 +3,13 @@ import unittest
 import inspect
 import models
 from models.engine import file_storage
-from models.base_model import BaseModel
 import json
 import pep8
 from models.engine.file_storage import FileStorage
-classes = FileStorage.classes
+from models import storage
+import os
 
-storage = models.storage
+classes = FileStorage.classes
 
 
 class TestFileStorageDocs(unittest.TestCase):
@@ -71,10 +71,22 @@ class TestFileStorageDocs(unittest.TestCase):
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
+    @classmethod
+    def setUpClass(cls):
+        """ Set up test environment """
+        cls.del_list = list(storage._FileStorage__objects.keys())
+
     def setUp(self):
-        """Test initialization"""
-        self.storage = FileStorage()
-        self.storage.__objects = {}
+        """ Set up test environment """
+        for key in self.del_list:
+            del storage._FileStorage__objects[key]
+
+    def tearDown(self):
+        """ Remove storage file at end of tests """
+        try:
+            os.remove('file.json')
+        except FileNotFoundError:
+            pass
 
     @unittest.skipIf(models.storage_type == 'db',
                      "not testing file storage")
