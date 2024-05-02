@@ -114,21 +114,21 @@ class TestFileStorage(unittest.TestCase):
             new_dict[instance_key] = instance
         original_objects = storage._FileStorage__objects
         storage._FileStorage__objects = new_dict
-        
+
         # Save to file.json
         storage.save()
-        
+
         # Restore the original __objects
         storage._FileStorage__objects = original_objects
-        
+
         # Convert instances to dict and compare with file.json
         for key, value in new_dict.items():
             new_dict[key] = value.to_dict()
         expected_json = json.dumps(new_dict)
-        
+
         with open("file.json", "r") as f:
             actual_json = f.read()
-        
+
         self.assertEqual(json.loads(expected_json), json.loads(actual_json))
 
     @unittest.skipIf(models.storage_type == 'db',
