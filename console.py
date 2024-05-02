@@ -21,22 +21,20 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+    def do_create(self, arg):
+        """Create a new instance of BaseModel, save it, and print the id"""
+        if not arg:
             print("** class name missing **")
             return
-        elif args not in classes:
+
+        class_name = arg.split()[0]
+        if class_name not in classes:
             print("** class doesn't exist **")
             return
 
-        try:
-            new_instance = classes[args]()
-            storage.save()
-            print(new_instance.id)
-            storage.save()
-        except Exception as e:
-            print(f"Error creating instance: {str(e)}")
+        new_instance = classes[class_name]()
+        new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """put information for the create method"""
