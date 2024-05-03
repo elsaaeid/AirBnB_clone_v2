@@ -29,10 +29,10 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns the dictionary __objects"""
-        if cls:
-            return {key: value for key, value in self.__objects.items()
-                    if isinstance(value, cls)}
+        """Return the dictionary __objects"""
+        if cls is not None:
+            return {key: value for key,
+                    value in self.__objects.items() if isinstance(value, cls)}
         return self.__objects
 
     def new(self, obj):
@@ -61,10 +61,11 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """Delete obj from __objects if it’s inside"""
-        if obj:
+        """Delete obj from __objects if it's inside"""
+        if obj is not None:
             key = "{}.{}".format(obj.__class__.__name__, obj.id)
-            self.__objects.pop(key, None)
+            if key in self.__objects:
+                del self.__objects[key]
 
     def close(self):
         """Call reload() method for deserializing the JSON file to objects"""
