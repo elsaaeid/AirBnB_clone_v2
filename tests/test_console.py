@@ -131,14 +131,14 @@ class TestConsole(unittest.TestCase):
 
     def test_amenity_show(self):
         """Test the "show" command for Amenity"""
-        expected_output = "** no instance found **"
+        expected_output = "** instance id missing **"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("Amenity.show()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_amenity_destroy(self):
         """Test the "destroy" command for Amenity"""
-        expected_output = "** no instance found **"
+        expected_output = "** instance id missing **"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("Amenity.destroy()")
             self.assertEqual(f.getvalue().strip(), expected_output)

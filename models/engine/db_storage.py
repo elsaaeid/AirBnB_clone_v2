@@ -93,11 +93,11 @@ class DBStorage:
         self.__session.close()
 
     def get(self, cls, id):
-        """ retrieves """
-        if cls in self.classes.values() and id and type(id) == str:
+        """Retrieves an instance based on the class and ID"""
+        if cls in self.classes.values() and id and isinstance(id, str):
             d_obj = self.all(cls)
             for key, value in d_obj.items():
-                if key.split(".")[1] == id:
+                if key.split(".")[1] is id:
                     return value
         return None
 
