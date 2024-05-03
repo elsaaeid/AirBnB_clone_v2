@@ -60,6 +60,20 @@ class TestConsoleDocs(unittest.TestCase):
 
 
 class TestConsole(unittest.TestCase):
+    """Class to test methods of console commands"""
+    @classmethod
+    def setUpClass(cls):
+        """Create command console to test with"""
+        cls.cmdcon = HBNBCommand()
+
+    def setUp(self):
+        """Create in memory buffer to capture stdout"""
+        self.output = StringIO()
+
+    def tearDown(self):
+        """Close in memory buffer after test completes"""
+        self.output.close()
+
     def assert_stdout(self, command, expected_output):
         """Helper method to assert the captured
         stdout matches the expected output
