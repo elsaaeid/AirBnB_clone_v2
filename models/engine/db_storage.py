@@ -22,14 +22,14 @@ hbnb_env = getenv("HBNB_ENV")
 class DBStorage:
     """class DBStorage"""
     classes = {
-    "BaseModel": BaseModel,
-    "Amenity": Amenity,
-    "City": City,
-    "Place": Place,
-    "Review": Review,
-    "State": State,
-    "User": User
-}
+        "BaseModel": BaseModel,
+        "Amenity": Amenity,
+        "City": City,
+        "Place": Place,
+        "Review": Review,
+        "State": State,
+        "User": User
+    }
     __engine = None
     __session = None
 
