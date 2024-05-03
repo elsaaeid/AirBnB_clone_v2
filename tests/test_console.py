@@ -67,11 +67,11 @@ class TestConsole(unittest.TestCase):
         cls.cmdcon = HBNBCommand()
 
     def setUp(self):
-        """Create in memory buffer to capture stdout"""
+        """Create in memory buffer"""
         self.output = StringIO()
 
     def tearDown(self):
-        """Close in memory buffer after test completes"""
+        """Close in memory buffer"""
         self.output.close()
 
     def assert_stdout(self, command, expected_output):
@@ -79,243 +79,243 @@ class TestConsole(unittest.TestCase):
         stdout matches the expected output
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd(command)
+            self.cmdcon.onecmd(command)
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_base_model_all(self):
         """Test the all command"""
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("all")
+            self.cmdcon.onecmd("all")
             self.assertIn("[BaseModel]", f.getvalue())
 
     # def test_base_model_count(self):
     #     """Test the "count" command for BaseModel"""
     #     expected_output = "** class doesn't exist **"
     #     with patch('sys.stdout', new=StringIO()) as f:
-    #         HBNBCommand().onecmd("BaseModel.count()")
+    #         self.cmdcon.onecmd("BaseModel.count()")
     #         self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_base_model_show(self):
         """Test the "show" command for BaseModel"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("show BaseModel 12345-6789")
+            self.cmdcon.onecmd("show BaseModel 12345-6789")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_base_model_destroy(self):
         """Test the "destroy" command for BaseModel"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("destroy BaseModel 12345-6789")
+            self.cmdcon.onecmd("destroy BaseModel 12345-6789")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_base_model_update(self):
         """Test the "update" command for BaseModel"""
         expected_output = "** insufficient arguments **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("update BaseModel")
+            self.cmdcon.onecmd("update BaseModel")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_amenity_all(self):
         """Test the all command"""
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("all")
+            self.cmdcon.onecmd("all")
             self.assertIn("[Amenity]", f.getvalue())
 
     # def test_amenity_count(self):
     #     """Test the "count" command for Amenity"""
     #     expected_output = "** class doesn't exist **"
     #     with patch('sys.stdout', new=StringIO()) as f:
-    #         HBNBCommand().onecmd("Amenity.count()")
+    #         self.cmdcon.onecmd("Amenity.count()")
     #         self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_amenity_show(self):
         """Test the "show" command for Amenity"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("show Amenity 12345-6789")
+            self.cmdcon.onecmd("show Amenity 12345-6789")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_amenity_destroy(self):
         """Test the "destroy" command for Amenity"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("destroy Amenity 12345-6789")
+            self.cmdcon.onecmd("destroy Amenity 12345-6789")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_amenity_update(self):
         """Test the "update" command for Amenity"""
         expected_output = "** insufficient arguments **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("update Amenity")
+            self.cmdcon.onecmd("update Amenity")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_city_all(self):
         """Test the all command"""
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("all")
+            self.cmdcon.onecmd("all")
             self.assertIn("[City]", f.getvalue())
 
     # def test_city_count(self):
     #     """Test the "count" command for City"""
     #     expected_output = "** class doesn't exist **"
     #     with patch('sys.stdout', new=StringIO()) as f:
-    #         HBNBCommand().onecmd("City.count()")
+    #         self.cmdcon.onecmd("City.count()")
     #         self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_city_show(self):
         """Test the "show" command for City"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("show City 12345-6789")
+            self.cmdcon.onecmd("show City 12345-6789")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_city_destroy(self):
         """Test the "destroy" command for City"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("destroy City 12345-6789")
+            self.cmdcon.onecmd("destroy City 12345-6789")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_city_update(self):
         """Test the "update" command for City"""
         expected_output = "** insufficient arguments **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("update City")
+            self.cmdcon.onecmd("update City")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_place_all(self):
         """Test the all command"""
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("all")
+            self.cmdcon.onecmd("all")
             self.assertIn("[Place]", f.getvalue())
 
     # def test_place_count(self):
     #     """Test the "count" command for Place"""
     #     expected_output = "** class doesn't exist **"
     #     with patch('sys.stdout', new=StringIO()) as f:
-    #         HBNBCommand().onecmd("Place.count()")
+    #         self.cmdcon.onecmd("Place.count()")
     #         self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_place_show(self):
         """Test the "show" command for Place"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("show Place 12345-6789")
+            self.cmdcon.onecmd("show Place 12345-6789")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_place_destroy(self):
         """Test the "destroy" command for Place"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("destroy Place 12345-6789")
+            self.cmdcon.onecmd("destroy Place 12345-6789")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_place_update(self):
         """Test the "update" command for Place"""
         expected_output = "** insufficient arguments **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("update Place")
+            self.cmdcon.onecmd("update Place")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_review_all(self):
         """Test the all command"""
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("all")
+            self.cmdcon.onecmd("all")
             self.assertIn("[Review]", f.getvalue())
 
     # def test_review_count(self):
     #     """Test the "count" command for Review"""
     #     expected_output = "** class doesn't exist **"
     #     with patch('sys.stdout', new=StringIO()) as f:
-    #         HBNBCommand().onecmd("Review.count()")
+    #         self.cmdcon.onecmd("Review.count()")
     #         self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_review_show(self):
         """Test the "show" command for Review"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("show Review 12345-6789")
+            self.cmdcon.onecmd("show Review 12345-6789")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_review_destroy(self):
         """Test the "destroy" command for Review"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("destroy Review 12345-6789")
+            self.cmdcon.onecmd("destroy Review 12345-6789")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_review_update(self):
         """Test the "update" command for Review"""
         expected_output = "** insufficient arguments **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("update Review")
+            self.cmdcon.onecmd("update Review")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_state_all(self):
         """Test the all command"""
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("all")
+            self.cmdcon.onecmd("all")
             self.assertIn("[State]", f.getvalue())
 
     # def test_state_count(self):
     #     """Test the "count" command for State"""
     #     expected_output = "** class doesn't exist **"
     #     with patch('sys.stdout', new=StringIO()) as f:
-    #         HBNBCommand().onecmd("State.count()")
+    #         self.cmdcon.onecmd("State.count()")
     #         self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_state_show(self):
         """Test the "show" command for State"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("show State 12345-6789")
+            self.cmdcon.onecmd("show State 12345-6789")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_state_destroy(self):
         """Test the "destroy" command for State"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("destroy State 12345-6789")
+            self.cmdcon.onecmd("destroy State 12345-6789")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_state_update(self):
         """Test the "update" command for State"""
         expected_output = "** insufficient arguments **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("update State")
+            self.cmdcon.onecmd("update State")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_user_all(self):
         """Test the all command"""
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("all")
+            self.cmdcon.onecmd("all")
             self.assertIn("[User]", f.getvalue())
 
     # def test_user_count(self):
     #     """Test the "count" command for User"""
     #     expected_output = "** class doesn't exist **"
     #     with patch('sys.stdout', new=StringIO()) as f:
-    #         HBNBCommand().onecmd("User.count()")
+    #         self.cmdcon.onecmd("User.count()")
     #         self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_user_show(self):
         """Test the "show" command for User"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("show User 12345-6789")
+            self.cmdcon.onecmd("show User 12345-6789")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_user_destroy(self):
         """Test the "destroy" command for User"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("destroy User 12345-6789")
+            self.cmdcon.onecmd("destroy User 12345-6789")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_user_update(self):
         """Test the "update" command for User"""
         expected_output = "** insufficient arguments **"
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("update User")
+            self.cmdcon.onecmd("update User")
             self.assertEqual(f.getvalue().strip(), expected_output)
