@@ -66,16 +66,22 @@ class DBStorage:
             self.__session.add(obj)
 
     def save(self):
-        """commit all changes of the current database session"""
+        """commit all changes of the
+        current database session
+        """
         self.__session.commit()
 
     def delete(self, obj=None):
-        """delete from the current database session obj if not None"""
+        """delete from the current database
+        session obj if not None
+        """
         if obj:
             self.__session.delete(obj)
 
     def reload(self):
-        """create all tables in the database and the current database session"""
+        """create all tables in the database and
+        the current database session
+        """
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
