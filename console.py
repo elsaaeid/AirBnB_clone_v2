@@ -113,41 +113,57 @@ class HBNBCommand(cmd.Cmd):
             print(my_list)
 
     def do_update(self, arg):
-        """Update an instance based on its ID with a dictionary representation"""
-        args = arg.split()
+        """Update an instance based on its
+        ID with a dictionary representation"""
+        args = shlex.split(arg)
+        integer_attrs = ["number_rooms", "number_bathrooms",
+                         "max_guest", "price_by_night"]
+        float_attrs = ["latitude", "longitude"]
+
         if not args:
             print("** class name missing **")
             return
+
         class_name = args[0]
         if class_name not in classes:
             print("** class doesn't exist **")
             return
+
         if len(args) < 2:
             print("** instance id missing **")
             return
+
         instance_id = args[1]
-        key_val_str = ' '.join(args[2:])
-        if not key_val_str:
-            print("** attribute dictionary missing **")
+        if class_name + "." + instance_id not in storage.all():
+            print("** no instance found **")
             return
-        try:
-            attr_dict = eval(key_val_str)
-            if not isinstance(attr_dict, dict):
-                raise ValueError("Invalid attribute dictionary format")
-            instance = storage.get(class_name, instance_id)
-            if instance:
-                for key, value in attr_dict.items():
-                    if hasattr(instance, key):
-                        setattr(instance, key, value)
-                    else:
-                        print(f"FAIL: model doesn't have new attribute {key}")
-                        return
-                instance.save()
-                print("OK")
-            else:
-                print("** no instance found **")
-        except Exception as e:
-            print(f"Error updating instance: {str(e)}")
+
+        if len(args) < 3:
+            print("** attribute name missing **")
+            return
+
+        attribute_name = args[2]
+        if len(args) < 4:
+            print("** value missing **")
+            return
+
+        attribute_value = args[3]
+        if class_name == "Place":
+            if attribute_name in integer_attrs:
+                try:
+                    attribute_value = int(attribute_value)
+                except ValueError:
+                    attribute_value = 0
+            elif attribute_name in float_attrs:
+                try:
+                    attribute_value = float(attribute_value)
+                except ValueError:
+                    attribute_value = 0.0
+
+        instance = storage.get(class_name, instance_id)
+        setattr(instance, attribute_name, attribute_value)
+        instance.save()
+        print("OK")
 
     def do_count(self, arg):
         """Counts all instances based on class name."""
