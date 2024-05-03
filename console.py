@@ -113,8 +113,7 @@ class HBNBCommand(cmd.Cmd):
             print(my_list)
 
     def do_update(self, arg):
-        """Update an instance based on its
-        ID with a dictionary representation"""
+        """Update an instance based on its ID with a dictionary representation"""
         args = arg.split()
         if not args:
             print("** class name missing **")
@@ -138,8 +137,13 @@ class HBNBCommand(cmd.Cmd):
             instance = storage.get(class_name, instance_id)
             if instance:
                 for key, value in attr_dict.items():
-                    setattr(instance, key, value)
+                    if hasattr(instance, key):
+                        setattr(instance, key, value)
+                    else:
+                        print(f"FAIL: model doesn't have new attribute {key}")
+                        return
                 instance.save()
+                print("OK")
             else:
                 print("** no instance found **")
         except Exception as e:
