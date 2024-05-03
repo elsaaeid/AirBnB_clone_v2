@@ -85,7 +85,7 @@ class TestConsole(unittest.TestCase):
     def test_base_model_all(self):
         """Test the all command"""
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("all")
+            self.cmdcon.onecmd("BaseModel.all()")
             self.assertIn("[BaseModel]", f.getvalue())
 
     def test_base_model_count(self):
@@ -99,27 +99,27 @@ class TestConsole(unittest.TestCase):
         """Test the "show" command for BaseModel"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("show BaseModel 12345-6789")
+            self.cmdcon.onecmd("BaseModel.show()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_base_model_destroy(self):
         """Test the "destroy" command for BaseModel"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("destroy BaseModel 12345-6789")
+            self.cmdcon.onecmd("BaseModel.destroy()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_base_model_update(self):
         """Test the "update" command for BaseModel"""
         expected_output = "** insufficient arguments **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("update BaseModel")
+            self.cmdcon.onecmd("BaseModel.update()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_amenity_all(self):
         """Test the all command"""
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("all")
+            self.cmdcon.onecmd("Amenity.all()")
             self.assertIn("[Amenity]", f.getvalue())
 
     def test_amenity_count(self):
@@ -133,27 +133,27 @@ class TestConsole(unittest.TestCase):
         """Test the "show" command for Amenity"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("show Amenity 12345-6789")
+            self.cmdcon.onecmd("Amenity.show()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_amenity_destroy(self):
         """Test the "destroy" command for Amenity"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("destroy Amenity 12345-6789")
+            self.cmdcon.onecmd("Amenity.destroy()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_amenity_update(self):
         """Test the "update" command for Amenity"""
         expected_output = "** insufficient arguments **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("update Amenity")
+            self.cmdcon.onecmd("Amenity.update()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_city_all(self):
         """Test the all command"""
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("all")
+            self.cmdcon.onecmd("City.all()")
             self.assertIn("[City]", f.getvalue())
 
     def test_city_count(self):
@@ -167,27 +167,27 @@ class TestConsole(unittest.TestCase):
         """Test the "show" command for City"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("show City 12345-6789")
+            self.cmdcon.onecmd("City.show()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_city_destroy(self):
         """Test the "destroy" command for City"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("destroy City 12345-6789")
+            self.cmdcon.onecmd("City.destroy()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_city_update(self):
         """Test the "update" command for City"""
         expected_output = "** insufficient arguments **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("update City")
+            self.cmdcon.onecmd("City.update()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_place_all(self):
         """Test the all command"""
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("all")
+            self.cmdcon.onecmd("Place.all()")
             self.assertIn("[Place]", f.getvalue())
 
     def test_place_count(self):
@@ -201,27 +201,27 @@ class TestConsole(unittest.TestCase):
         """Test the "show" command for Place"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("show Place 12345-6789")
+            self.cmdcon.onecmd("Place.show()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_place_destroy(self):
         """Test the "destroy" command for Place"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("destroy Place 12345-6789")
+            self.cmdcon.onecmd("Place.destroy()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_place_update(self):
         """Test the "update" command for Place"""
         expected_output = "** insufficient arguments **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("update Place")
+            self.cmdcon.onecmd("Place.update()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_review_all(self):
         """Test the all command"""
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("all")
+            self.cmdcon.onecmd("Review.all()")
             self.assertIn("[Review]", f.getvalue())
 
     def test_review_count(self):
@@ -235,27 +235,27 @@ class TestConsole(unittest.TestCase):
         """Test the "show" command for Review"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("show Review 12345-6789")
+            self.cmdcon.onecmd("Review.show()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_review_destroy(self):
         """Test the "destroy" command for Review"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("destroy Review 12345-6789")
+            self.cmdcon.onecmd("Review.destroy()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_review_update(self):
         """Test the "update" command for Review"""
         expected_output = "** insufficient arguments **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("update Review")
+            self.cmdcon.onecmd("Review.update()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_state_all(self):
         """Test the all command"""
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("all")
+            self.cmdcon.onecmd("State.all()")
             self.assertIn("[State]", f.getvalue())
 
     def test_state_count(self):
@@ -269,27 +269,27 @@ class TestConsole(unittest.TestCase):
         """Test the "show" command for State"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("show State 12345-6789")
+            self.cmdcon.onecmd("State.show()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_state_destroy(self):
         """Test the "destroy" command for State"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("destroy State 12345-6789")
+            self.cmdcon.onecmd("State.destroy()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_state_update(self):
         """Test the "update" command for State"""
         expected_output = "** insufficient arguments **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("update State")
+            self.cmdcon.onecmd("State.update()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_user_all(self):
         """Test the all command"""
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("all")
+            self.cmdcon.onecmd("User.all()")
             self.assertIn("[User]", f.getvalue())
 
     def test_user_count(self):
@@ -303,19 +303,19 @@ class TestConsole(unittest.TestCase):
         """Test the "show" command for User"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("show User 12345-6789")
+            self.cmdcon.onecmd("User.show()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_user_destroy(self):
         """Test the "destroy" command for User"""
         expected_output = "** no instance found **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("destroy User 12345-6789")
+            self.cmdcon.onecmd("User.destroy()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_user_update(self):
         """Test the "update" command for User"""
         expected_output = "** insufficient arguments **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("update User")
+            self.cmdcon.onecmd("User.update()")
             self.assertEqual(f.getvalue().strip(), expected_output)
