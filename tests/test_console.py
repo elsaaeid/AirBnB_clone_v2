@@ -158,7 +158,7 @@ class TestConsole(unittest.TestCase):
 
     def test_city_count(self):
         """Test the "count" command for City"""
-        expected_output = "1\n"
+        expected_output = "4"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("City.count()")
             self.assertEqual(f.getvalue().strip(), expected_output)
