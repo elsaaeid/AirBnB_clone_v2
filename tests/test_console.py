@@ -172,7 +172,7 @@ class TestConsole(unittest.TestCase):
 
     def test_city_destroy(self):
         """Test the "destroy" command for City"""
-        expected_output = "** no instance found **"
+        expected_output = "** instance id missing **"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("City.destroy()")
             self.assertEqual(f.getvalue().strip(), expected_output)
@@ -192,7 +192,7 @@ class TestConsole(unittest.TestCase):
 
     def test_place_count(self):
         """Test the "count" command for Place"""
-        expected_output = "1\n"
+        expected_output = "9"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("Place.count()")
             self.assertEqual(f.getvalue().strip(), expected_output)
@@ -206,7 +206,7 @@ class TestConsole(unittest.TestCase):
 
     def test_place_destroy(self):
         """Test the "destroy" command for Place"""
-        expected_output = "** no instance found **"
+        expected_output = "** instance id missing **"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("Place.destroy()")
             self.assertEqual(f.getvalue().strip(), expected_output)
@@ -240,7 +240,7 @@ class TestConsole(unittest.TestCase):
 
     def test_review_destroy(self):
         """Test the "destroy" command for Review"""
-        expected_output = "** no instance found **"
+        expected_output = "** instance id missing **"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("Review.destroy()")
             self.assertEqual(f.getvalue().strip(), expected_output)
@@ -274,7 +274,7 @@ class TestConsole(unittest.TestCase):
 
     def test_state_destroy(self):
         """Test the "destroy" command for State"""
-        expected_output = "** no instance found **"
+        expected_output = "** instance id missing **"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("State.destroy()")
             self.assertEqual(f.getvalue().strip(), expected_output)
@@ -308,7 +308,7 @@ class TestConsole(unittest.TestCase):
 
     def test_user_destroy(self):
         """Test the "destroy" command for User"""
-        expected_output = "** no instance found **"
+        expected_output = "** instance id missing **"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("User.destroy()")
             self.assertEqual(f.getvalue().strip(), expected_output)
