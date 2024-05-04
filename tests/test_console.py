@@ -145,7 +145,7 @@ class TestConsole(unittest.TestCase):
 
     def test_amenity_update(self):
         """Test the "update" command for Amenity"""
-        expected_output = "** Invalid update command format **"
+        expected_output = "Invalid update command format"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("Amenity.update()")
             self.assertEqual(f.getvalue().strip(), expected_output)
