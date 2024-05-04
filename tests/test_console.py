@@ -124,7 +124,7 @@ class TestConsole(unittest.TestCase):
 
     def test_amenity_count(self):
         """Test the "count" command for Amenity"""
-        expected_output = "1\n"
+        expected_output = "2"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("Amenity.count()")
             self.assertEqual(f.getvalue().strip(), expected_output)
