@@ -97,7 +97,7 @@ class TestConsole(unittest.TestCase):
 
     def test_base_model_show(self):
         """Test the "show" command for BaseModel"""
-        expected_output = "** no instance found **"
+        expected_output = "** instance id missing **"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("BaseModel.show()")
             self.assertEqual(f.getvalue().strip(), expected_output)
