@@ -111,7 +111,7 @@ class TestConsole(unittest.TestCase):
 
     def test_base_model_update(self):
         """Test the "update" command for BaseModel"""
-        expected_output = "Invalid update command format"
+        expected_output = "** instance id missing **"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("BaseModel.update()")
             self.assertEqual(f.getvalue().strip(), expected_output)
@@ -145,7 +145,7 @@ class TestConsole(unittest.TestCase):
 
     def test_amenity_update(self):
         """Test the "update" command for Amenity"""
-        expected_output = "Invalid update command format"
+        expected_output = "** instance id missing **"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("update Amenity")
             self.assertEqual(f.getvalue().strip(), expected_output)
@@ -179,7 +179,7 @@ class TestConsole(unittest.TestCase):
 
     def test_city_update(self):
         """Test the "update" command for City"""
-        expected_output = "Invalid update command format"
+        expected_output = "** instance id missing **"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("City.update()")
             self.assertEqual(f.getvalue().strip(), expected_output)
@@ -213,7 +213,7 @@ class TestConsole(unittest.TestCase):
 
     def test_place_update(self):
         """Test the "update" command for Place"""
-        expected_output = "Invalid update command format"
+        expected_output = "** instance id missing **"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("Place.update()")
             self.assertEqual(f.getvalue().strip(), expected_output)
@@ -247,7 +247,7 @@ class TestConsole(unittest.TestCase):
 
     def test_review_update(self):
         """Test the "update" command for Review"""
-        expected_output = "Invalid update command format"
+        expected_output = "** instance id missing **"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("Review.update()")
             self.assertEqual(f.getvalue().strip(), expected_output)
@@ -281,7 +281,7 @@ class TestConsole(unittest.TestCase):
 
     def test_state_update(self):
         """Test the "update" command for State"""
-        expected_output = "Invalid update command format"
+        expected_output = "** instance id missing **"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("State.update()")
             self.assertEqual(f.getvalue().strip(), expected_output)
@@ -315,7 +315,7 @@ class TestConsole(unittest.TestCase):
 
     def test_user_update(self):
         """Test the "update" command for User"""
-        expected_output = "Invalid update command format"
+        expected_output = "** instance id missing **"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("User.update()")
             self.assertEqual(f.getvalue().strip(), expected_output)
