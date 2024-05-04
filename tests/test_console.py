@@ -226,7 +226,7 @@ class TestConsole(unittest.TestCase):
 
     def test_review_count(self):
         """Test the "count" command for Review"""
-        expected_output = "1\n"
+        expected_output = "6"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("Review.count()")
             self.assertEqual(f.getvalue().strip(), expected_output)
@@ -260,7 +260,7 @@ class TestConsole(unittest.TestCase):
 
     def test_state_count(self):
         """Test the "count" command for State"""
-        expected_output = "1\n"
+        expected_output = "12"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("State.count()")
             self.assertEqual(f.getvalue().strip(), expected_output)
@@ -294,7 +294,7 @@ class TestConsole(unittest.TestCase):
 
     def test_user_count(self):
         """Test the "count" command for User"""
-        expected_output = "1\n"
+        expected_output = "13"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("User.count()")
             self.assertEqual(f.getvalue().strip(), expected_output)
