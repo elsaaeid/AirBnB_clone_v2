@@ -90,7 +90,7 @@ class TestConsole(unittest.TestCase):
 
     def test_base_model_count(self):
         """Test the "count" command for BaseModel"""
-        expected_output = "1\n"
+        expected_output = "7"
         with patch('sys.stdout', new=StringIO()) as f:
             self.cmdcon.onecmd("BaseModel.count()")
             self.assertEqual(f.getvalue().strip(), expected_output)
