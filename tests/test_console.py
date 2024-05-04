@@ -126,28 +126,28 @@ class TestConsole(unittest.TestCase):
         """Test the "count" command for Amenity"""
         expected_output = "6"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("Amenity.count()")
+            self.cmdcon.onecmd("count Amenity")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_amenity_show(self):
         """Test the "show" command for Amenity"""
         expected_output = "** instance id missing **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("Amenity.show()")
+            self.cmdcon.onecmd("show Amenity")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_amenity_destroy(self):
         """Test the "destroy" command for Amenity"""
         expected_output = "** instance id missing **"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("Amenity.destroy()")
+            self.cmdcon.onecmd("destroy Amenity")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_amenity_update(self):
         """Test the "update" command for Amenity"""
         expected_output = "Invalid update command format"
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("Amenity.update()")
+            self.cmdcon.onecmd("update Amenity")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
     def test_city_all(self):
