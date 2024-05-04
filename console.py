@@ -358,13 +358,10 @@ class HBNBCommand(cmd.Cmd):
         the class Amenity"""
         the_class = "Amenity"
         my_arg = arg.split(".")
-        
         if len(my_arg) < 2:
             print("Invalid command format")
             return
-        
         command = my_arg[1].split('(')[0]
-        
         if command == "all":
             self.do_all(the_class)
         elif command == "count":
