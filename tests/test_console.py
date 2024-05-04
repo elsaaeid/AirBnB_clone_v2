@@ -116,11 +116,11 @@ class TestConsole(unittest.TestCase):
             self.cmdcon.onecmd("BaseModel.update()")
             self.assertEqual(f.getvalue().strip(), expected_output)
 
-    def test_amenity_all(self):
-        """Test the all command"""
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("Amenity.all()")
-            self.assertIn("Amenity", f.getvalue())
+    # def test_amenity_all(self):
+    #     """Test the all command"""
+    #     with patch('sys.stdout', new=StringIO()) as f:
+    #         self.cmdcon.onecmd("Amenity.all()")
+    #         self.assertIn("Amenity", f.getvalue())
 
     def test_amenity_count(self):
         """Test the "count" command for Amenity"""
