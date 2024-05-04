@@ -382,7 +382,15 @@ class HBNBCommand(cmd.Cmd):
                 instance_id = args[0].strip().strip('"')
                 attribute_name = args[1].strip().strip('"')
                 attribute_value = args[2].strip().strip('"')
-                param = f"{the_class} {instance_id} {attribute_name} {attribute_value}"
+                param = f"{
+                    the_class
+                    } {
+                        instance_id
+                        } {
+                            attribute_name
+                            } {
+                                attribute_value
+                                }"
                 self.do_update(param)
         else:
             print("Invalid command")
