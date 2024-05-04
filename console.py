@@ -354,40 +354,42 @@ class HBNBCommand(cmd.Cmd):
                 print("Invalid command")
 
     def do_Amenity(self, arg):
-        """Sends a command based on the class Amenity"""
+        """Process commands based on
+        the class Amenity"""
         the_class = "Amenity"
         my_arg = arg.split(".")
-        if my_arg[1] == 'all()':
+        
+        if len(my_arg) < 2:
+            print("Invalid command format")
+            return
+        
+        command = my_arg[1].split('(')[0]
+        
+        if command == "all":
             self.do_all(the_class)
-        elif my_arg[1] == 'count()':
+        elif command == "count":
             self.do_count(the_class)
-        else:
-            command = my_arg[1].split('(')[0]
-            if command == "show":
-                instance_id = my_arg[1].split('(')[1].split(')')[0]
-                param = the_class + " " + instance_id
-                self.do_show(param)
-            elif command == "destroy":
-                instance_id = my_arg[1].split('(')[1].split(')')[0]
-                param = the_class + " " + instance_id
-                self.do_destroy(param)
-            elif command == "update":
-                args = my_arg[1].split('(')[1].split(')')[0].split(',')
-                if len(args) != 3:
-                    print("Invalid update command format")
-                else:
-                    instance_id = args[0].strip().strip('"')
-                    attribute_name = args[1].strip().strip('"')
-                    attribute_value = args[2].strip().strip('"')
-                    param = "{} {} {} {}".format(
-                        the_class,
-                        instance_id,
-                        attribute_name,
-                        attribute_value
-                        )
-                    self.do_update(param)
+        elif command == "show":
+            instance_id = my_arg[1].split('(')[1].split(')')[0]
+            param = f"{the_class} {instance_id}"
+            self.do_show(param)
+        elif command == "destroy":
+            instance_id = my_arg[1].split('(')[1].split(')')[0]
+            param = f"{the_class} {instance_id}"
+            self.do_destroy(param)
+        elif command == "update":
+            args = my_arg[1].split('(')[1].split(')')[0].split(',')
+            if len(args) != 3:
+                print("Invalid update command format")
             else:
-                print("Invalid command")
+                instance_id = args[0].strip().strip('"')
+                attribute_name = args[1].strip().strip('"')
+                attribute_value = args[2].strip().strip('"')
+                param = f"{the_class}
+                {instance_id} {attribute_name} {attribute_value}"
+                self.do_update(param)
+        else:
+            print("Invalid command")
 
     def do_Place(self, arg):
         """Sends a command based on the class Place"""

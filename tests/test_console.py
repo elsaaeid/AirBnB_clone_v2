@@ -119,7 +119,7 @@ class TestConsole(unittest.TestCase):
     def test_amenity_all(self):
         """Test the all command"""
         with patch('sys.stdout', new=StringIO()) as f:
-            self.cmdcon.onecmd("all()")
+            self.cmdcon.onecmd("all Amenity")
             self.assertIn("Amenity", f.getvalue())
 
     def test_amenity_count(self):
