@@ -7,6 +7,7 @@ from io import StringIO
 from unittest.mock import patch
 from console import HBNBCommand
 
+
 class TestConsoleDocs(unittest.TestCase):
     """Class for testing documentation of the console"""
 
